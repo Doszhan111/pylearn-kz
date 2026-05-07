@@ -1,0 +1,1873 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PyLearn KZ — Python үйрен 🐍</title>
+<meta name="description" content="Қазақ тілінде Python үйрену платформасы — AI мұғалімімен, ойындармен, жетістіктермен"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:#050a17;--bg2:#08101f;--bg3:#0d1628;--bg4:#121e38;--bg5:#172240;
+  --card:#0d1526;--card2:#101b2f;
+  --border:rgba(100,160,255,0.08);--border2:rgba(100,160,255,0.15);--border3:rgba(100,160,255,0.25);
+  --text:#e8f0ff;--text2:#7a92c0;--text3:#3d5070;
+  --accent:#5b6ef5;--accent2:#7c6af5;--accent3:#4cd4ff;
+  --green:#22d67a;--red:#f05060;--yellow:#ffcc44;--blue:#4da8ff;--purple:#a87cff;--pink:#f05090;
+  --font:'Sora',sans-serif;--mono:'JetBrains Mono',monospace;
+  --r:14px;--r2:9px;--r3:6px;
+  --shadow:0 8px 40px rgba(0,0,30,0.7);--shadow2:0 2px 16px rgba(0,0,30,0.5);
+  --glow-a:0 0 30px rgba(91,110,245,0.4);--glow-g:0 0 24px rgba(34,214,122,0.35);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.6;overflow-x:hidden;min-height:100vh}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border3);border-radius:3px}
+::selection{background:rgba(91,110,245,0.35);color:var(--text)}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes glow{0%,100%{box-shadow:0 0 20px rgba(91,110,245,0.25)}50%{box-shadow:0 0 50px rgba(91,110,245,0.55)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:translateX(0)}}
+@keyframes bounceIn{0%{transform:scale(0.7);opacity:0}60%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+@keyframes streakPop{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes toastIn{from{opacity:0;transform:translateY(12px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes xpPop{0%{transform:scale(1)}30%{transform:scale(1.4);color:var(--yellow)}100%{transform:scale(1)}}
+
+.fade-up{animation:fadeUp 0.4s ease forwards}
+.fade-in{animation:fadeIn 0.3s ease forwards}
+.slide-in{animation:slideIn 0.3s ease forwards}
+.bounce-in{animation:bounceIn 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:var(--r2);font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all 0.18s;text-decoration:none;letter-spacing:0.01em}
+.btn:disabled{opacity:0.38;cursor:not-allowed;pointer-events:none}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 2px 14px rgba(91,110,245,0.35)}
+.btn-primary:hover:not(:disabled){filter:brightness(1.12);transform:translateY(-1px);box-shadow:0 4px 24px rgba(91,110,245,0.5)}
+.btn-primary:active{transform:translateY(0)}
+.btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border2)}
+.btn-ghost:hover:not(:disabled){background:var(--bg3);color:var(--text);border-color:var(--border3)}
+.btn-success{background:rgba(34,214,122,0.12);color:var(--green);border:1px solid rgba(34,214,122,0.3)}
+.btn-success:hover:not(:disabled){background:rgba(34,214,122,0.2)}
+.btn-danger{background:rgba(240,80,96,0.12);color:var(--red);border:1px solid rgba(240,80,96,0.3)}
+.btn-cyan{background:rgba(76,212,255,0.12);color:var(--accent3);border:1px solid rgba(76,212,255,0.3)}
+.btn-cyan:hover:not(:disabled){background:rgba(76,212,255,0.2)}
+.btn-lg{padding:13px 28px;font-size:15px;border-radius:var(--r)}
+.btn-sm{padding:5px 11px;font-size:12px;border-radius:var(--r3)}
+
+/* ── CARDS ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px}
+.card-hover{transition:all 0.2s;cursor:pointer}
+.card-hover:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:var(--shadow2)}
+.glass{background:rgba(13,21,38,0.7);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border2)}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:0.02em}
+.badge-xp{background:rgba(255,204,68,0.12);color:var(--yellow);border:1px solid rgba(255,204,68,0.2)}
+.badge-level{background:rgba(91,110,245,0.12);color:var(--accent);border:1px solid rgba(91,110,245,0.25)}
+.badge-streak{background:rgba(240,80,96,0.12);color:var(--red);border:1px solid rgba(240,80,96,0.25)}
+.badge-new{background:rgba(34,214,122,0.12);color:var(--green);border:1px solid rgba(34,214,122,0.25)}
+.badge-purple{background:rgba(168,124,255,0.12);color:var(--purple);border:1px solid rgba(168,124,255,0.25)}
+
+/* ── CODE ── */
+.code-block{background:#06090f;border:1px solid rgba(100,160,255,0.1);border-radius:var(--r2);padding:16px;font-family:var(--mono);font-size:13px;line-height:1.75;white-space:pre-wrap;overflow-x:auto;color:#c9d8ff;position:relative}
+.code-block .kw{color:#7c6af5} .code-block .fn{color:#4cd4ff} .code-block .st{color:#22d67a} .code-block .cm{color:#3d5070} .code-block .nm{color:#ffcc44}
+.textarea-code{background:#06090f;border:1px solid rgba(100,160,255,0.12);border-radius:var(--r2);padding:14px;font-family:var(--mono);font-size:13px;color:#c9d8ff;outline:none;width:100%;resize:vertical;line-height:1.75;transition:border-color 0.2s;min-height:160px}
+.textarea-code:focus{border-color:var(--accent)}
+
+/* ── INPUTS ── */
+.input-field{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:10px 14px;font-family:var(--font);font-size:13px;color:var(--text);outline:none;width:100%;transition:border-color 0.2s}
+.input-field:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(91,110,245,0.12)}
+.input-field::placeholder{color:var(--text3)}
+
+/* ── PROGRESS ── */
+.progress-bar{background:var(--bg4);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;border-radius:999px;transition:width 0.9s cubic-bezier(0.34,1.2,0.64,1)}
+
+/* ── TABS ── */
+.tab-btn{padding:8px 16px;font-size:13px;font-weight:600;border:none;cursor:pointer;border-radius:var(--r2);font-family:var(--font);transition:all 0.2s;color:var(--text2);background:transparent;letter-spacing:0.01em}
+.tab-btn.active{background:var(--bg3);color:var(--text);box-shadow:0 1px 8px rgba(0,0,0,0.4)}
+.tab-btn:hover:not(.active){color:var(--text)}
+
+/* ── AI CHAT ── */
+.ai-bubble-user{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-radius:16px 16px 4px 16px;padding:11px 15px;max-width:80%;font-size:13px;line-height:1.55;box-shadow:0 2px 12px rgba(91,110,245,0.3)}
+.ai-bubble-ai{background:var(--bg3);border:1px solid var(--border2);color:var(--text);border-radius:16px 16px 16px 4px;padding:11px 15px;max-width:85%;font-size:13px;line-height:1.65}
+.ai-bubble-ai code{background:rgba(0,0,0,0.5);padding:2px 7px;border-radius:4px;font-family:var(--mono);font-size:12px;color:var(--green)}
+.ai-bubble-ai pre{background:#06090f;border-radius:var(--r2);padding:12px;margin:8px 0;overflow-x:auto;font-family:var(--mono);font-size:12px;color:#c9d8ff;white-space:pre-wrap;border:1px solid rgba(100,160,255,0.08)}
+.ai-bubble-ai strong{color:var(--text);font-weight:700}
+
+/* ── LESSON STATES ── */
+.lesson-locked{opacity:0.35;cursor:not-allowed!important;pointer-events:none}
+.lesson-done{border-color:rgba(34,214,122,0.3)!important;background:rgba(34,214,122,0.03)!important}
+.lesson-next{border-color:rgba(91,110,245,0.5)!important;animation:glow 2.5s ease infinite}
+
+/* ── MISC ── */
+.spinner{width:16px;height:16px;border:2px solid var(--border3);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite;display:inline-block;flex-shrink:0}
+.divider{height:1px;background:var(--border);margin:16px 0}
+.xp-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:700;background:rgba(255,204,68,0.1);color:var(--yellow);border:1px solid rgba(255,204,68,0.2)}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:28px;right:28px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:13px 20px;font-size:13px;font-weight:600;color:var(--text);z-index:9999;box-shadow:var(--shadow);animation:toastIn 0.35s ease;max-width:340px}
+
+/* ── HEADER ── */
+.header{background:rgba(5,10,23,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:0 24px;position:sticky;top:0;z-index:100}
+
+/* ── GRIDS ── */
+.grid-lessons{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:12px}
+
+/* ── HERO GRADIENT BG ── */
+.hero-bg{position:relative;overflow:hidden}
+.hero-bg::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(91,110,245,0.2) 0%,transparent 70%);pointer-events:none}
+
+/* ── ACHIEVEMENT POPUP ── */
+.achievement-popup{position:fixed;top:80px;right:24px;z-index:9998;background:linear-gradient(135deg,var(--bg3),var(--bg4));border:1px solid rgba(255,204,68,0.4);border-radius:var(--r);padding:16px 20px;box-shadow:0 8px 40px rgba(0,0,0,0.6),0 0 24px rgba(255,204,68,0.2);animation:bounceIn 0.4s ease;max-width:300px}
+
+/* ── STATS BAR STRIP ── */
+.stat-strip{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;background:var(--bg3);border:1px solid var(--border);font-size:12px;font-weight:600}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .hide-mobile{display:none!important}
+  .grid-lessons{grid-template-columns:repeat(2,1fr)}
+  .main-cols{flex-direction:column!important}
+  .header{padding:0 16px}
+  .page-pad{padding:16px!important}
+  .stat-strip span.stat-label{display:none}
+}
+@media(max-width:480px){
+  .grid-lessons{grid-template-columns:1fr}
+}
+
+/* ── SCREEN WRAPPER ── */
+#app{min-height:100vh}
+.screen{display:none;animation:fadeIn 0.3s ease}
+.screen.active{display:block}
+
+/* ── SYNTAX COLORS for code display ── */
+.py-kw{color:#a87cff} .py-fn{color:#4cd4ff} .py-str{color:#22d67a} .py-num{color:#ffcc44} .py-cm{color:#3d5070;font-style:italic} .py-op{color:#f05060}
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- TOAST -->
+  <div id="toast" class="toast" style="display:none"></div>
+  <!-- ACHIEVEMENT POPUP -->
+  <div id="achPopup" class="achievement-popup" style="display:none"></div>
+
+  <!-- ═══════════════ DASHBOARD SCREEN ═══════════════ -->
+  <div id="screen-dashboard" class="screen active">
+    <!-- Header -->
+    <header class="header hero-bg">
+      <div style="max-width:1160px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;gap:12px">
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+          <div style="font-size:22px;animation:float 3s ease infinite">🐍</div>
+          <div>
+            <div style="font-size:15px;font-weight:800;letter-spacing:-0.01em;background:linear-gradient(90deg,var(--text),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent">PyLearn KZ</div>
+            <div style="font-size:10px;color:var(--text3);font-weight:500;margin-top:-2px">Python үйрен</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex:1;justify-content:center" class="hide-mobile">
+          <div class="stat-strip" id="header-streak">🔥 <span id="hdr-streak">0</span> <span class="stat-label" style="color:var(--text2)">күн</span></div>
+          <div class="stat-strip" id="header-xp">⚡ <span id="hdr-xp">0</span> <span class="stat-label" style="color:var(--text2)">XP</span></div>
+          <div class="stat-strip" id="header-level">🌱 <span id="hdr-level">Жаңадан бастаушы</span></div>
+        </div>
+        <div style="display:flex;gap:6px;flex-shrink:0">
+          <button class="btn btn-ghost btn-sm" onclick="showScreen('ai-chat')">🤖 AI Мұғалім</button>
+          <button class="btn btn-ghost btn-sm" onclick="showScreen('teacher')">👩‍🏫 Мұғалім</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Body -->
+    <div style="max-width:1160px;margin:0 auto;padding:28px 24px" class="page-pad">
+      <!-- Welcome + XP -->
+      <div class="card hero-bg fade-up" style="margin-bottom:20px;border-color:rgba(91,110,245,0.2);background:linear-gradient(135deg,var(--card) 0%,rgba(13,22,45,0.8) 100%)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px">
+          <div>
+            <div style="font-size:22px;font-weight:800;margin-bottom:4px">Сәлем! 👋</div>
+            <div style="font-size:14px;color:var(--text2)">Python жолыңды жалғастыр. Бүгін де бір сабақ аяқта!</div>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <div class="stat-strip" style="gap:8px"><span style="font-size:16px;animation:streakPop 2s ease infinite">🔥</span><span id="dash-streak" style="font-weight:800;color:var(--red)">0</span><span style="color:var(--text3)">күн серия</span></div>
+            <div class="stat-strip" style="gap:8px">🏆 <span id="dash-done">0</span>/<span>12</span> <span style="color:var(--text3)">сабақ</span></div>
+          </div>
+        </div>
+        <div style="margin-top:16px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+            <span id="dash-level-name" style="font-size:12px;font-weight:700;color:var(--accent)">🌱 Жаңадан бастаушы</span>
+            <span id="dash-xp-info" style="font-size:11px;color:var(--text3)">0 XP</span>
+          </div>
+          <div class="progress-bar" style="height:8px">
+            <div class="progress-fill" id="dash-xp-bar" style="width:0%;background:linear-gradient(90deg,var(--accent),var(--accent3))"></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:20px" class="main-cols">
+        <!-- LEFT: Lessons -->
+        <div style="flex:1;min-width:0">
+          <!-- Section header -->
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+            <div style="font-size:15px;font-weight:700">📚 Сабақтар жолы</div>
+            <span id="lessons-progress-text" class="badge badge-level">0/12 аяқталды</span>
+          </div>
+          <div class="grid-lessons" id="lessons-grid"></div>
+        </div>
+
+        <!-- RIGHT: Sidebar -->
+        <div style="width:280px;flex-shrink:0" class="hide-mobile" id="sidebar">
+          <!-- Mini AI Chat teaser -->
+          <div class="card fade-up" style="margin-bottom:14px;border-color:rgba(91,110,245,0.25);background:linear-gradient(135deg,var(--card),rgba(91,110,245,0.07))">
+            <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px">
+              <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🤖</div>
+              <div>
+                <div style="font-size:13px;font-weight:700">AI Мұғалім</div>
+                <div style="font-size:11px;color:var(--text2)">Кез-келген сұрақты қой</div>
+              </div>
+            </div>
+            <button class="btn btn-primary" style="width:100%" onclick="showScreen('ai-chat')">AI-мен сөйлес →</button>
+          </div>
+
+          <!-- Achievements -->
+          <div class="card fade-up" style="margin-bottom:14px">
+            <div style="font-size:13px;font-weight:700;margin-bottom:12px">🏅 Жетістіктер</div>
+            <div id="sidebar-achievements"></div>
+          </div>
+
+          <!-- Leaderboard dummy -->
+          <div class="card fade-up">
+            <div style="font-size:13px;font-weight:700;margin-bottom:12px">🏆 Үздіктер</div>
+            <div id="sidebar-leaderboard"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ LESSON SCREEN ═══════════════ -->
+  <div id="screen-lesson" class="screen">
+    <!-- Lesson header -->
+    <header class="header">
+      <div style="max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;gap:12px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <button class="btn btn-ghost btn-sm" onclick="showScreen('dashboard')">← Артқа</button>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span id="lesson-icon" style="font-size:20px"></span>
+            <span id="lesson-title" style="font-weight:700;font-size:15px"></span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="xp-pill" id="lesson-xp-pill"></span>
+          <span id="lesson-done-badge" style="display:none" class="badge badge-new">✓ Аяқталды</span>
+        </div>
+      </div>
+      <!-- Lesson progress strip -->
+      <div style="height:3px;background:var(--bg4)">
+        <div id="lesson-progress-line" style="height:100%;background:linear-gradient(90deg,var(--accent),var(--accent3));transition:width 0.5s;width:0%"></div>
+      </div>
+    </header>
+
+    <div style="max-width:1100px;margin:0 auto;padding:24px" class="page-pad" id="lesson-body">
+      <!-- Tab nav -->
+      <div style="display:flex;gap:4px;background:var(--bg2);border-radius:var(--r2);padding:4px;margin-bottom:24px;width:fit-content" id="lesson-tabs">
+        <button class="tab-btn active" onclick="switchLessonTab('theory')">📖 Теория</button>
+        <button class="tab-btn" onclick="switchLessonTab('examples')">💡 Мысалдар</button>
+        <button class="tab-btn" onclick="switchLessonTab('tasks')">⌨️ Тапсырмалар</button>
+        <button class="tab-btn" onclick="switchLessonTab('tests')">📝 Тесттер</button>
+      </div>
+
+      <!-- Tab contents -->
+      <div id="tab-theory" class="lesson-tab"></div>
+      <div id="tab-examples" class="lesson-tab" style="display:none"></div>
+      <div id="tab-tasks" class="lesson-tab" style="display:none"></div>
+      <div id="tab-tests" class="lesson-tab" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ AI CHAT SCREEN ═══════════════ -->
+  <div id="screen-ai-chat" class="screen">
+    <header class="header">
+      <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <button class="btn btn-ghost btn-sm" onclick="showScreen('dashboard')">← Артқа</button>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:16px">🤖</div>
+            <div>
+              <div style="font-weight:700;font-size:14px">AI Python Мұғалім</div>
+              <div style="font-size:11px;color:var(--green)">● Онлайн</div>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="clearAIChat()">🗑 Тазалау</button>
+      </div>
+    </header>
+    <div style="max-width:900px;margin:0 auto;padding:20px 24px;display:flex;flex-direction:column;height:calc(100vh - 60px)" class="page-pad">
+      <div id="ai-messages" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding-bottom:12px;min-height:0">
+        <!-- Messages rendered here -->
+      </div>
+      <!-- Quick suggestions -->
+      <div id="ai-suggestions" style="display:flex;gap:6px;flex-wrap:wrap;padding:10px 0">
+        <button class="btn btn-ghost btn-sm" onclick="aiQuickSend('print() қалай жұмыс істейді?')">print() не?</button>
+        <button class="btn btn-ghost btn-sm" onclick="aiQuickSend('for цикл мысал бер')">for цикл</button>
+        <button class="btn btn-ghost btn-sm" onclick="aiQuickSend('тізім (list) қалай жасаймын?')">list жасау</button>
+        <button class="btn btn-ghost btn-sm" onclick="aiQuickSend('функция деген не?')">функция</button>
+      </div>
+      <!-- Input -->
+      <div style="display:flex;gap:8px;border-top:1px solid var(--border);padding-top:14px;flex-shrink:0">
+        <textarea id="ai-input" class="input-field" rows="2" placeholder="Python туралы сұрақ қой... (Enter жібереді)" style="resize:none;flex:1"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAIMessage()}"></textarea>
+        <button class="btn btn-primary" onclick="sendAIMessage()" id="ai-send-btn" style="align-self:flex-end">
+          <span id="ai-send-text">Жібер</span>
+          <div class="spinner" id="ai-spinner" style="display:none"></div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ TEACHER PANEL ═══════════════ -->
+  <div id="screen-teacher" class="screen">
+    <header class="header">
+      <div style="max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <button class="btn btn-ghost btn-sm" onclick="showScreen('dashboard')">← Артқа</button>
+          <span style="font-weight:700;font-size:15px">👩‍🏫 Мұғалім панелі</span>
+        </div>
+      </div>
+    </header>
+    <div style="max-width:1100px;margin:0 auto;padding:28px 24px" class="page-pad" id="teacher-body">
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════
+const LESSONS = [
+  {id:1,icon:"🐍",xpReward:100,title:"Python-ға кіріспе",shortDesc:"Бірінші программаны жаз",
+    theory:`Python — 1991 жылы Гвидо ван Россум жасаған программалау тілі. Аты жыланнан емес, «Monty Python» комедиялық шоудан алынған.
+
+Python-ды қайда қолданады?
+→ Google, YouTube, Instagram, Netflix
+→ Ғылым мен зерттеулер  
+→ Жасанды интеллект (ChatGPT де Python!)
+→ Ойындар мен роботтар
+
+print() — экранға мәтін шығарады.
+Мәтінді тырнақшаға алу міндетті: "мәтін" немесе 'мәтін'`,
+    examples:[
+      {title:"Сәлем Әлем!",code:`print("Сәлем, Әлем!")`,output:"Сәлем, Әлем!"},
+      {title:"Бірнеше жол",code:`print("Менің атым Python")\nprint("Мен 6-сыныпта оқимын")\nprint("Программалауды жақсы көремін")`,output:"Менің атым Python\nМен 6-сыныпта оқимын\nПрограммалауды жақсы көремін"},
+    ],
+    commonErrors:[
+      {wrong:"Print('сәлем')",right:"print('сәлем')",note:"Python кіші/бас әріпті ажыратады"},
+      {wrong:"print(сәлем)",right:'print("сәлем")',note:"Мәтінді тырнақшаға алу керек"},
+    ],
+    tasks:[
+      {id:"t1",title:"Өз атыңды шығар",desc:"print() арқылы өз атыңды экранға шығар",starter:'# Атыңды осы жерге жаз\nprint("Атым: ...")',check:(o)=>o.length>0},
+      {id:"t2",title:"3 жолды шығар",desc:"Атыңды, қалаңды, жасыңды 3 жол etip шығар",starter:'print("Атым: ...")\nprint("Қалам: ...")\nprint("Жасым: ...")',check:(o)=>o.split("\n").filter(Boolean).length>=3},
+    ],
+    tests:[
+      {type:"choice",q:"Python-да экранға мәтін шығару командасы?",opts:["write()","print()","echo()","show()"],ans:1},
+      {type:"truefalse",q:"Python-да Print() мен print() — бірдей.",ans:false},
+      {type:"fill",q:'___("Сәлем") — бос орынды толтыр',hint:"Мәтін шығаратын функция",ans:"print"},
+      {type:"choice",q:"Python тілін кім жасады?",opts:["Билл Гейтс","Гвидо ван Россум","Стив Джобс","Линус Торвальдс"],ans:1},
+    ],
+  },
+  {id:2,icon:"📦",xpReward:120,title:"Айнымалылар",shortDesc:"Деректерді сақта және қолдан",
+    theory:`Айнымалы — деректерді сақтайтын «жәшік». Оған ат беріп, ішіне мән саласың.
+
+Жасау ережелері:
+→ = белгісі арқылы жасалады: san = 5
+→ Атауы әріптен немесе _ белгісінен басталуы керек
+→ Бос орын болмайды: menin_atym ✓
+→ Python кіші/бас әріпті ажыратады: jas ≠ Jas
+
+Мән түрлері:
+→ Сан: san = 42
+→ Мәтін: at = "Арман"
+→ Ондық: baga = 3.99`,
+    examples:[
+      {title:"Айнымалы жасау",code:`at = "Арман"\njas = 13\nqala = "Астана"\nprint(at)\nprint(jas)\nprint(qala)`,output:"Арман\n13\nАстана"},
+      {title:"Есептеу",code:`baga = 500\nadet = 3\njami = baga * adet\nprint("Жиыны:", jami, "теңге")`,output:"Жиыны: 1500 теңге"},
+    ],
+    commonErrors:[
+      {wrong:"менің атым = 'Арман'",right:"menin_atym = 'Арман'",note:"Атауда бос орын болмайды"},
+      {wrong:"print(at) — at анықталмаса",right:"at = 'Арман'\nprint(at)",note:"Алдымен жасап, сонан соң қолдан"},
+    ],
+    tasks:[
+      {id:"t1",title:"Айнымалылар жаса",desc:"at, jas, qala айнымалыларын жасап шығар",starter:'at = "Атың"\njas = 13\nqala = "Қалаң"\nprint(at, jas, qala)',check:(o)=>o.length>0},
+      {id:"t2",title:"Баға есепте",desc:"baga=250, adet=4, jami=baga*adet шығар",starter:'baga = 250\nadet = 4\njami = baga * adet\nprint("Жиыны:", jami)',check:(o)=>o.includes("1000")},
+    ],
+    tests:[
+      {type:"choice",q:"Айнымалыға мән беру белгісі?",opts:["==","=","!=",":="],ans:1},
+      {type:"truefalse",q:"Python-да jas мен Jas — бірдей айнымалылар.",ans:false},
+      {type:"fill",q:"san ___ 10 — санды 10-ға тең ету",hint:"Меншіктеу операторы",ans:"="},
+      {type:"truefalse",q:"Айнымалы атында бос орын болуы мүмкін.",ans:false},
+    ],
+  },
+  {id:3,icon:"🔢",xpReward:130,title:"Деректер түрлері",shortDesc:"int, float, str, bool",
+    theory:`Python-да 4 негізгі деректер түрі:
+
+int   — бүтін сан:    42, -5, 0
+float — ондық сан:    3.14, -0.5
+str   — мәтін:        "Сәлем", 'Python'
+bool  — логикалық:    True, False
+
+type() — деректер түрін анықтайды
+int()  — мәтінді санға айналдырады
+str()  — санды мәтінге айналдырады
+float()— санды ондыққа айналдырады`,
+    examples:[
+      {title:"Түрлерді тексеру",code:`san = 42\nondyk = 3.14\nmetin = "Python"\ndurys = True\nprint(type(san))\nprint(type(metin))`,output:"<class 'int'>\n<class 'str'>"},
+      {title:"Айналдыру",code:`metin_san = "25"\nnagty_san = int(metin_san)\nprint(nagty_san + 5)`,output:"30"},
+    ],
+    commonErrors:[
+      {wrong:'"5" + 3',right:'int("5") + 3',note:"Мәтін санды қоса алмайды, алдымен айналдыр"},
+      {wrong:"true / false",right:"True / False",note:"bool мәндері бас әріппен жазылады"},
+    ],
+    tasks:[
+      {id:"t1",title:"Түрлерді анықта",desc:"4 айнымалы жасап, type() арқылы шығар",starter:'a = 10\nb = 3.14\nc = "Python"\nd = True\nprint(type(a))\nprint(type(b))',check:(o)=>o.includes("int")},
+      {id:"t2",title:"Айналдыру",desc:'"30" мәтінін int-ке айналдырып, 20 қос',starter:'metin = "30"\nsan = int(metin)\nprint(san + 20)',check:(o)=>o.includes("50")},
+    ],
+    tests:[
+      {type:"choice",q:"3.14 қандай тип?",opts:["int","str","float","bool"],ans:2},
+      {type:"fill",q:'"42"-ні санға айналдыру: ___("42")',hint:"Санға айналдыратын функция",ans:"int"},
+      {type:"truefalse",q:"Python-да bool мәні: true (кіші әріппен).",ans:false},
+      {type:"truefalse",q:'str(100) нәтижесі — "100" мәтіні.',ans:true},
+    ],
+  },
+  {id:4,icon:"⌨️",xpReward:120,title:"input / print",shortDesc:"Пайдаланушымен сөйлес",
+    theory:`input() — пайдаланушыдан деректер алады.
+print() — экранға шығарады.
+
+МАҢЫЗДЫ: input() БАРЛЫҒЫН мәтін (str) түрінде қайтарады!
+Санмен жұмыс жасасаң — int() немесе float() керек.
+
+print() мүмкіндіктері:
+→ print("Сәлем", "Арман")      — бос орынмен
+→ print("Жасы:", 13)           — мәтін + сан
+→ print(f"Атым {at}, жасым {jas}") — f-string`,
+    examples:[
+      {title:"Атын сұрап сәлемдесу",code:`at = input("Атыңды жаз: ")\nprint("Сәлем,", at, "!")`,output:"Атыңды жаз: Арман\nСәлем, Арман !"},
+      {title:"Жасын сұрап есептеу",code:`jyl = int(input("Туған жылың: "))\njas = 2025 - jyl\nprint(f"Жасың: {jas}")`,output:"Туған жылың: 2012\nЖасың: 13"},
+    ],
+    commonErrors:[
+      {wrong:"san = input(); san + 5",right:"san = int(input()); san + 5",note:"input() мәтін береді, int() санға айналдырады"},
+      {wrong:'print("Жас:" + 13)',right:'print("Жас:", 13)',note:"Мәтін мен санды + арқылы қоса алмайсың"},
+    ],
+    tasks:[
+      {id:"t1",title:"Сәлемдесу",desc:"Атын сұрап, 'Сәлем, [ат]!' деп шығар",starter:'at = input("Атыңды жаз: ")\nprint("Сәлем,", at, "!")',check:(o)=>o.length>0},
+      {id:"t2",title:"Жас есептеу",desc:"Туған жылды сұрап, 2025-тен алып жасын шығар",starter:'jyl = int(input("Туған жылың: "))\njas = 2025 - jyl\nprint("Жасың:", jas)',check:(o)=>o.length>0},
+    ],
+    tests:[
+      {type:"choice",q:"input() қандай тип береді?",opts:["int","float","str","bool"],ans:2},
+      {type:"fill",q:"Санды оқу: san = ___(input())",hint:"Санға айналдырады",ans:"int"},
+      {type:"truefalse",q:'print("Жасым:", 15) дұрыс жазылған.',ans:true},
+      {type:"truefalse",q:"input() санды автоматты int-ке айналдырады.",ans:false},
+    ],
+  },
+  {id:5,icon:"➕",xpReward:140,title:"Арифметика",shortDesc:"Математикалық операциялар",
+    theory:`Python математика калькуляторы сияқты!
+
++   қосу:        5 + 3 = 8
+-   алу:         10 - 4 = 6
+*   көбейту:     3 * 4 = 12
+/   бөлу:        10 / 3 = 3.333...
+//  бүтін бөлу:  10 // 3 = 3
+%   қалдық:      10 % 3 = 1
+**  дәреже:      2 ** 8 = 256`,
+    examples:[
+      {title:"Негізгі операциялар",code:`a = 17\nb = 5\nprint(a + b)\nprint(a - b)\nprint(a * b)\nprint(a // b)\nprint(a % b)`,output:"22\n12\n85\n3\n2"},
+      {title:"Шеңбер аумағы",code:`r = 7\npi = 3.14159\naumaq = pi * r ** 2\nprint("Аумағы:", round(aumaq, 2))`,output:"Аумағы: 153.94"},
+    ],
+    commonErrors:[
+      {wrong:"10 / 0",right:"if b != 0: print(a/b)",note:"Нөлге бөлу ZeroDivisionError береді"},
+      {wrong:"2+3*4 = 20",right:"2+3*4 = 14",note:"* алдымен орындалады, + кейін"},
+    ],
+    tasks:[
+      {id:"t1",title:"Тіктөртбұрыш ауданы",desc:"en=8, biiktik=5 болса ауданы?",starter:'en = 8\nbiiktik = 5\naudan = en * biiktik\nprint("Аудан:", audan)',check:(o)=>o.includes("40")},
+      {id:"t2",title:"Ақша есебі",desc:"450*6 — 6 тауардың бағасын есепте",starter:'baga = 450\nadet = 6\njami = baga * adet\nprint("Жиыны:", jami, "теңге")',check:(o)=>o.includes("2700")},
+    ],
+    tests:[
+      {type:"choice",q:"17 % 5 = ?",opts:["3","2","1","4"],ans:1},
+      {type:"choice",q:"2 ** 10 = ?",opts:["20","512","1024","256"],ans:2},
+      {type:"fill",q:"Бүтін бөлу: 17 ___ 5 = 3",hint:"Екі сызықша",ans:"//"},
+      {type:"truefalse",q:"2 + 3 * 4 = 20 (Python-да)",ans:false},
+    ],
+  },
+  {id:6,icon:"🔀",xpReward:150,title:"Шарттар (if/elif/else)",shortDesc:"Шешім қабылдауды үйрен",
+    theory:`if — шарт дұрыс болса, блок орындалады.
+elif — келесі шартты тексереді.
+else — басқа барлық жағдай.
+
+Синтаксис:
+if шарт:
+    код (4 бос орын!)
+elif екінші_шарт:
+    код
+else:
+    код
+
+Салыстыру: ==  !=  >  <  >=  <=
+Логикалық: and  or  not`,
+    examples:[
+      {title:"Жұп/Тақ анықтау",code:`san = 17\nif san % 2 == 0:\n    print("Жұп сан")\nelse:\n    print("Тақ сан")`,output:"Тақ сан"},
+      {title:"Баға жүйесі",code:`ball = 85\nif ball >= 90:\n    print("5 — Үздік")\nelif ball >= 70:\n    print("4 — Жақсы")\nelif ball >= 50:\n    print("3 — Қанағатт.")\nelse:\n    print("2 — Қайта оқы")`,output:"4 — Жақсы"},
+    ],
+    commonErrors:[
+      {wrong:"if x = 5:",right:"if x == 5:",note:"= меншіктеу, == тең салыстыру"},
+      {wrong:"if шарт (қос нүктесіз)",right:"if шарт:",note:"Қос нүкте : міндетті!"},
+    ],
+    tasks:[
+      {id:"t1",title:"Жұп/Тақ",desc:"san=24 болса, жұп немесе тақ екенін шығар",starter:'san = 24\nif san % 2 == 0:\n    print("Жұп сан")\nelse:\n    print("Тақ сан")',check:(o)=>o.includes("Жұп")},
+      {id:"t2",title:"Максимум",desc:"a=15, b=22 — үлкенін шығар",starter:'a = 15\nb = 22\nif a > b:\n    print("Үлкені:", a)\nelse:\n    print("Үлкені:", b)',check:(o)=>o.includes("22")},
+    ],
+    tests:[
+      {type:"choice",q:"if блогының соңына не қойылады?",opts:[".",";"," :","  ,"],ans:2},
+      {type:"choice",q:'"Тең" салыстыру операторы?',opts:["=","==","===","!="],ans:1},
+      {type:"truefalse",q:"else болуы міндетті.",ans:false},
+      {type:"fill",q:"Тең емес: a ___ b",hint:"! + =",ans:"!="},
+    ],
+  },
+  {id:7,icon:"🔁",xpReward:160,title:"For циклі",shortDesc:"Белгілі рет қайталан",
+    theory:`for — range() немесе тізім бойынша айналып өтеді.
+
+range() функциясы:
+range(5)      → 0,1,2,3,4
+range(1,6)    → 1,2,3,4,5
+range(0,10,2) → 0,2,4,6,8 (қадам 2)
+
+Тізіммен:
+for san in [10, 20, 30]:
+    print(san)`,
+    examples:[
+      {title:"1-ден 5-ке дейін",code:`for i in range(1, 6):\n    print(i)`,output:"1\n2\n3\n4\n5"},
+      {title:"Көбейту кестесі",code:`for i in range(1, 6):\n    print(f"3 × {i} = {3*i}")`,output:"3 × 1 = 3\n3 × 2 = 6\n3 × 3 = 9\n3 × 4 = 12\n3 × 5 = 15"},
+    ],
+    commonErrors:[
+      {wrong:"range(1,5) → 1,2,3,4,5",right:"range(1,5) → 1,2,3,4 тек!",note:"Соңғы сан кірмейді"},
+      {wrong:"for i in range(5) (қос нүктесіз)",right:"for i in range(5):",note:"Қос нүкте міндетті"},
+    ],
+    tasks:[
+      {id:"t1",title:"Кестені шығар",desc:"5-ке көбейту кестесі (1×5 ... 10×5)",starter:'for i in range(1, 11):\n    print(i, "×", 5, "=", i*5)',check:(o)=>o.includes("50")},
+      {id:"t2",title:"Жұп сандар",desc:"1-20 аралығындағы жұп сандарды шығар",starter:'for i in range(2, 21, 2):\n    print(i)',check:(o)=>o.includes("20")&&o.includes("2")},
+    ],
+    tests:[
+      {type:"choice",q:"range(3, 8) — қандай сандар?",opts:["3,4,5,6,7,8","3,4,5,6,7","4,5,6,7,8","3,4,5"],ans:1},
+      {type:"fill",q:"0,2,4,6,8 шығару: range(0,10,___)",hint:"Қадам мөлшері",ans:"2"},
+      {type:"truefalse",q:"range(5) нәтижесі: 1,2,3,4,5",ans:false},
+      {type:"truefalse",q:"range(1, 6) — 5 элемент береді.",ans:true},
+    ],
+  },
+  {id:8,icon:"🌀",xpReward:160,title:"While циклі",shortDesc:"Шарт бойынша қайталан",
+    theory:`while — шарт дұрыс болса, қайталана береді.
+
+while шарт:
+    код
+
+break   — циклді тоқтатады
+continue — келесі итерацияға өту
+
+НАЗАР: Шексіз цикл болмас үшін
+шарт өзгеруі тиіс!`,
+    examples:[
+      {title:"Санауыш",code:`i = 1\nwhile i <= 5:\n    print(i)\n    i += 1`,output:"1\n2\n3\n4\n5"},
+      {title:"break қолдану",code:`i = 0\nwhile True:\n    i += 1\n    if i == 4:\n        break\n    print(i)`,output:"1\n2\n3"},
+    ],
+    commonErrors:[
+      {wrong:"while True: (ешнәрсе жоқ)",right:"while True:\n    ...\n    if шарт: break",note:"break болмаса шексіз цикл!"},
+    ],
+    tasks:[
+      {id:"t1",title:"Кері санау",desc:"10-нан 1-ге дейін кері санайтын while жаз",starter:'i = 10\nwhile i >= 1:\n    print(i)\n    i -= 1',check:(o)=>o.includes("10")&&o.includes("1")},
+      {id:"t2",title:"Жұп сандар",desc:"while арқылы 1-20 аралығындағы жұп сандарды шығар",starter:'i = 2\nwhile i <= 20:\n    print(i)\n    i += 2',check:(o)=>o.includes("20")},
+    ],
+    tests:[
+      {type:"choice",q:"while циклін тоқтататын команда?",opts:["stop","end","break","exit"],ans:2},
+      {type:"truefalse",q:"while True: — шексіз цикл жасайды.",ans:true},
+      {type:"fill",q:"i = 0; while i < 5: i ___ 1 — шарт жаңарту",hint:"Қосу және меншіктеу",ans:"+="},
+      {type:"truefalse",q:"continue — циклдің ағымдағы итерациясын өткізіп жібереді.",ans:true},
+    ],
+  },
+  {id:9,icon:"📋",xpReward:180,title:"Тізімдер (List)",shortDesc:"Деректер жинағы",
+    theory:`Тізім — бірнеше мәнді бір айнымалыда сақтайды.
+
+Жасау: san_tizim = [1, 2, 3, 4, 5]
+Оқу:  san_tizim[0]  → бірінші элемент (0-ден басталады!)
+
+Негізгі операциялар:
+.append(x)  — соңына қосады
+.remove(x)  — алып тастайды
+.sort()     — реттейді
+len(tizim)  — ұзындық
+tizim[i]    — i-ші элемент`,
+    examples:[
+      {title:"Тізімді жасау",code:`attary = ["Арман", "Айгерім", "Дамир"]\nprint(attary[0])\nprint(len(attary))`,output:"Арман\n3"},
+      {title:"Элемент қосу",code:`sandary = [3, 1, 4, 1, 5]\nsandary.append(9)\nsandary.sort()\nprint(sandary)`,output:"[1, 1, 3, 4, 5, 9]"},
+    ],
+    commonErrors:[
+      {wrong:"tizim[3] — тізімде 3 элемент болса",right:"tizim[2] — соңғы элемент",note:"Индекс 0-ден басталады!"},
+    ],
+    tasks:[
+      {id:"t1",title:"Тізім жаса",desc:"5 жемістің тізімін жасап, бірінші элементті шығар",starter:'jemister = ["алма", "банан", "апельсин", "жүзім", "алмұрт"]\nprint(jemister[0])\nprint(len(jemister))',check:(o)=>o.includes("алма")},
+      {id:"t2",title:"Реттеу",desc:"Сандар тізімін реттеп шығар",starter:'sandary = [5, 2, 8, 1, 9, 3]\nsandary.sort()\nprint(sandary)',check:(o)=>o.includes("1")&&o.includes("9")},
+    ],
+    tests:[
+      {type:"choice",q:"tizim = [10,20,30]; tizim[1] = ?",opts:["10","20","30","қате"],ans:1},
+      {type:"fill",q:"Тізімге элемент қосу: tizim.___(5)",hint:"Ағылшынша 'қосу'",ans:"append"},
+      {type:"truefalse",q:"Python тізімінде индекс 1-ден басталады.",ans:false},
+      {type:"choice",q:"len([1,2,3,4,5]) = ?",opts:["4","5","6","3"],ans:1},
+    ],
+  },
+  {id:10,icon:"⚙️",xpReward:200,title:"Функциялар (def)",shortDesc:"Кодты блоктарға бөл",
+    theory:`Функция — бірнеше рет қолдануға болатын код блогы.
+
+def function_aty(параметр):
+    код
+    return нәтиже
+
+Неліктен керек?
+→ Кодты бір жерде жазып, бірнеше рет шақырасың
+→ Программа ретті болады
+→ Қателерді табу оңайырақ
+
+return — функция нәтижесін қайтарады`,
+    examples:[
+      {title:"Қарапайым функция",code:`def selem(at):\n    print(f"Сәлем, {at}!")\n\nselem("Арман")\nselem("Айгерім")`,output:"Сәлем, Арман!\nСәлем, Айгерім!"},
+      {title:"Нәтиже қайтару",code:`def audan(en, biiktik):\n    return en * biiktik\n\nnatiije = audan(5, 8)\nprint("Аудан:", natiije)`,output:"Аудан: 40"},
+    ],
+    commonErrors:[
+      {wrong:"def fn() — def жоқ",right:"def fn():\n    ...",note:"def кілт сөзі міндетті"},
+      {wrong:"fn() шақыру — fn() жоқ болса",right:"алдымен def fn() жаз",note:"Шақырмас бұрын анықта"},
+    ],
+    tasks:[
+      {id:"t1",title:"Функция жаса",desc:"Екі санды қосатын qos(a,b) функциясын жаз",starter:'def qos(a, b):\n    return a + b\n\nprint(qos(5, 3))\nprint(qos(10, 20))',check:(o)=>o.includes("8")},
+      {id:"t2",title:"Сәлемдесу",desc:"Атты қабылдап, f-string арқылы сәлемдесетін функция",starter:'def selem(at):\n    print(f"Сәлем, {at}! Python жолдасысың!")\n\nselem("Арман")',check:(o)=>o.includes("Сәлем")},
+    ],
+    tests:[
+      {type:"fill",q:"Функция жасау кілт сөзі: ___",hint:"Definition",ans:"def"},
+      {type:"truefalse",q:"Функция нәтиже қайтармауы мүмкін.",ans:true},
+      {type:"choice",q:"def fn(a, b): — a мен b ne?",opts:["Нәтиже","Параметр","Айнымалы","Класс"],ans:1},
+      {type:"truefalse",q:"return — функциядан шығып, мән қайтарады.",ans:true},
+    ],
+  },
+  {id:11,icon:"🎲",xpReward:220,title:"Кездейсоқ сандар",shortDesc:"random модулімен жұмыс",
+    theory:`random модулі — кездейсоқ сандар жасайды.
+
+import random  ← алдымен импорт!
+
+random.randint(a, b) — a мен b аралығында бүтін сан
+random.random()      — 0 мен 1 аралығында ондық
+random.choice(tizim) — тізімнен кездейсоқ элемент
+
+Қайда қолданылады?
+→ Ойындар
+→ Тест сұрақтарын кездейсоқ беру
+→ Имитация мен модельдеу`,
+    examples:[
+      {title:"Кездейсоқ сан",code:`import random\nsan = random.randint(1, 100)\nprint("Сан:", san)`,output:"Сан: 47 (кездейсоқ)"},
+      {title:"Ойын: болжа!",code:`import random\njasyryn = random.randint(1, 10)\nprint("1-10 арасынан болжа!")\n# input() арқылы ойнайсың`,output:"1-10 арасынан болжа!"},
+    ],
+    commonErrors:[
+      {wrong:"randint(1,5) — import жоқ",right:"import random\nrandom.randint(1,5)",note:"Алдымен import random жазу керек"},
+    ],
+    tasks:[
+      {id:"t1",title:"Кездейсоқ сан",desc:"1-100 аралығынан кездейсоқ сан шығар",starter:'import random\nsan = random.randint(1, 100)\nprint("Кездейсоқ сан:", san)',check:(o)=>o.includes("Кездейсоқ")},
+      {id:"t2",title:"Тізімнен таңдау",desc:"Жемістер тізімінен кездейсоқ бірін таңдат",starter:'import random\njemister = ["алма", "банан", "апельсин", "жүзім"]\ntandau = random.choice(jemister)\nprint("Таңдалды:", tandau)',check:(o)=>o.includes("Таңдалды")},
+    ],
+    tests:[
+      {type:"fill",q:"Кездейсоқ модуль: import ___",hint:"Модуль аты",ans:"random"},
+      {type:"choice",q:"random.randint(5, 5) = ?",opts:["4","5","6","кездейсоқ"],ans:1},
+      {type:"truefalse",q:"import random — файлдың бас жағында жазылады.",ans:true},
+      {type:"choice",q:"Тізімнен кездейсоқ таңдау:",opts:["random.pick()","random.choice()","random.select()","random.get()"],ans:1},
+    ],
+  },
+  {id:12,icon:"🏆",xpReward:300,title:"Финалдық жоба",shortDesc:"Барлық білімді біріктір!",
+    theory:`Мақтаймыз! 11 сабақты аяқтадың! 🎉
+
+Финалдық жобада не болуы керек:
+✓ Кем дегенде 3 функция (def)
+✓ Кем дегенде 1 цикл (for немесе while)
+✓ Шарттар (if/elif/else)
+✓ Тізімдер ([...])
+✓ Пайдаланушымен диалог (input/print)
+
+Жоба идеялары:
+🎮 Викторина — сұрақтар мен жауаптар
+📊 Калькулятор — қосымша мүмкіндіктермен
+📚 Оқушылар журналы — бағаларды сақтау
+🌡️ Конвертер — темп/валюта/ұзындық`,
+    examples:[
+      {title:"Мини-калькулятор",code:`def qos(a, b): return a + b\ndef al(a, b): return a - b\ndef kobe(a, b): return a * b\n\na = 10\nb = 3\nprint("+:", qos(a,b))\nprint("-:", al(a,b))\nprint("*:", kobe(a,b))`,output:"+: 13\n-: 7\n*: 30"},
+    ],
+    commonErrors:[],
+    tasks:[
+      {id:"t1",title:"Финалдық жоба",desc:"Өзің таңдаған мини-программа жаз (кем дегенде 20 жол)",starter:'# ═══════════════════════════════════\n# Менің финалдық жобам\n# Атым: ...\n# Тақырып: ...\n# ═══════════════════════════════════\n\nprint("Жобаңды осы жерге жаз!")',check:()=>true},
+    ],
+    tests:[
+      {type:"choice",q:"Функция жасау кілт сөзі?",opts:["function","def","func","create"],ans:1},
+      {type:"truefalse",q:"Python-да тізім [] жақшамен жасалады.",ans:true},
+      {type:"fill",q:"Кездейсоқ сан үшін: import ___",hint:"Модуль аты",ans:"random"},
+      {type:"choice",q:"12 сабақты аяқтадың! Сен кімсің?",opts:["Жаңадан бастаушы","Орташа","Python Hero 🐍","Хакер"],ans:2},
+    ],
+  },
+];
+
+const ACHIEVEMENTS = [
+  {id:"first_run",icon:"⚡",title:"Алғашқы код!",desc:"Бірінші рет кодты іске қосты",xpBonus:25},
+  {id:"first_lesson",icon:"📖",title:"Бірінші сабақ",desc:"Бірінші сабақты аяқтады",xpBonus:50},
+  {id:"test_ace",icon:"🎯",title:"Тест шебері",desc:"100% нәтиже алды",xpBonus:75},
+  {id:"half_done",icon:"🌟",title:"Жартысы аяқталды",desc:"6 сабақты аяқтады",xpBonus:100},
+  {id:"python_hero",icon:"🏆",title:"Python Hero",desc:"Барлық 12 сабақты аяқтады!",xpBonus:300},
+  {id:"ai_helper",icon:"🤖",title:"AI достым",desc:"AI мұғалімнен 5 сұрақ сұрады",xpBonus:40},
+  {id:"speed_run",icon:"🚀",title:"Жылдам оқушы",desc:"Бір сабақтың бар тесттерін дұрыс жауаптады",xpBonus:60},
+];
+
+const LEVELS = [
+  {min:0,name:"Жаңадан бастаушы",color:"#94a3b8",emoji:"🌱"},
+  {min:300,name:"Үйренуші",color:"#4da8ff",emoji:"📘"},
+  {min:700,name:"Практик",color:"#22d67a",emoji:"💻"},
+  {min:1300,name:"Білгір",color:"#a87cff",emoji:"🔮"},
+  {min:2000,name:"Шебер",color:"#ffcc44",emoji:"⭐"},
+  {min:3000,name:"Про",color:"#f97316",emoji:"🔥"},
+  {min:4500,name:"Python Hero 🐍",color:"#f05060",emoji:"🏆"},
+];
+
+const LEADERBOARD = [
+  {name:"Жансая Т.",xp:1100,emoji:"🔮"},
+  {name:"Аида М.",xp:820,emoji:"💻"},
+  {name:"Нурлан К.",xp:540,emoji:"📘"},
+  {name:"Мадина Е.",xp:410,emoji:"📘"},
+  {name:"Арман Б.",xp:350,emoji:"📘"},
+];
+
+// ═══════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════
+const SAVE_KEY = "pylearn_kz_v5";
+let state = {
+  xp: 0,
+  streak: 1,
+  completed: [],
+  testScores: {},
+  achievements: [],
+  aiQuestionCount: 0,
+  tasksDone: {},
+  lastSeen: new Date().toDateString(),
+};
+
+function loadState() {
+  try {
+    const d = localStorage.getItem(SAVE_KEY);
+    if (d) state = {...state, ...JSON.parse(d)};
+  } catch {}
+}
+function saveState() {
+  try { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); } catch {}
+}
+
+function getLevelInfo(xp) {
+  const lvls = LEVELS.filter(l => xp >= l.min);
+  return lvls[lvls.length - 1] || LEVELS[0];
+}
+function getNextLevel(xp) {
+  return LEVELS.find(l => xp < l.min);
+}
+function getXPPct(xp) {
+  const lvl = getLevelInfo(xp);
+  const next = getNextLevel(xp);
+  if (!next) return 100;
+  return Math.min(100, Math.round((xp - lvl.min) / (next.min - lvl.min) * 100));
+}
+
+function earnXP(amount, reason) {
+  state.xp += amount;
+  saveState();
+  updateHeaderUI();
+  showToast(`+${amount} XP ⚡`);
+
+  // Check streak
+  const today = new Date().toDateString();
+  if (state.lastSeen !== today) {
+    state.streak++;
+    state.lastSeen = today;
+    saveState();
+  }
+}
+
+function giveAchievement(id) {
+  if (state.achievements.includes(id)) return;
+  const ach = ACHIEVEMENTS.find(a => a.id === id);
+  if (!ach) return;
+  state.achievements.push(id);
+  saveState();
+  showAchievementPopup(ach);
+  earnXP(ach.xpBonus, "achievement");
+}
+
+// ═══════════════════════════════════════════════════
+// UI HELPERS
+// ═══════════════════════════════════════════════════
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.style.display = "block";
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.style.display = "none", 2200);
+}
+
+function showAchievementPopup(ach) {
+  const p = document.getElementById("achPopup");
+  p.innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="font-size:32px;animation:bounceIn 0.4s ease">${ach.icon}</div>
+      <div>
+        <div style="font-size:10px;color:var(--yellow);font-weight:700;letter-spacing:0.08em;margin-bottom:2px">🎉 ЖЕТІСТІК!</div>
+        <div style="font-size:14px;font-weight:700">${ach.title}</div>
+        <div style="font-size:12px;color:var(--text2)">${ach.desc}</div>
+        <div style="font-size:11px;color:var(--yellow);margin-top:4px">+${ach.xpBonus} XP</div>
+      </div>
+    </div>`;
+  p.style.display = "block";
+  setTimeout(() => p.style.display = "none", 3500);
+}
+
+function updateHeaderUI() {
+  const lvl = getLevelInfo(state.xp);
+  const next = getNextLevel(state.xp);
+  const pct = getXPPct(state.xp);
+  document.querySelectorAll('#hdr-xp,#hdr-xp2').forEach(e => e && (e.textContent = state.xp));
+  document.querySelectorAll('#hdr-streak,#hdr-streak2').forEach(e => e && (e.textContent = state.streak));
+  document.querySelectorAll('#hdr-level').forEach(e => e && (e.textContent = lvl.emoji + " " + lvl.name));
+
+  // Dashboard specific
+  const dxp = document.getElementById("dash-xp-info");
+  if (dxp) dxp.textContent = state.xp + (next ? ` / ${next.min} XP` : " XP — MAX!");
+  const dxpb = document.getElementById("dash-xp-bar");
+  if (dxpb) dxpb.style.width = pct + "%";
+  const dlvl = document.getElementById("dash-level-name");
+  if (dlvl) { dlvl.textContent = lvl.emoji + " " + lvl.name; dlvl.style.color = lvl.color; }
+  const dstreak = document.getElementById("dash-streak");
+  if (dstreak) dstreak.textContent = state.streak;
+  const ddone = document.getElementById("dash-done");
+  if (ddone) ddone.textContent = state.completed.length;
+  const lpt = document.getElementById("lessons-progress-text");
+  if (lpt) lpt.textContent = state.completed.length + "/12 аяқталды";
+}
+
+// ═══════════════════════════════════════════════════
+// SCREEN ROUTING
+// ═══════════════════════════════════════════════════
+let currentScreen = "dashboard";
+function showScreen(name) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById("screen-" + name).classList.add("active");
+  currentScreen = name;
+  if (name === "dashboard") renderDashboard();
+  if (name === "teacher") renderTeacher();
+  if (name === "ai-chat") initAIChat();
+}
+
+// ═══════════════════════════════════════════════════
+// DASHBOARD RENDER
+// ═══════════════════════════════════════════════════
+function renderDashboard() {
+  updateHeaderUI();
+  renderLessonsGrid();
+  renderSidebarAchievements();
+  renderLeaderboard();
+}
+
+function renderLessonsGrid() {
+  const grid = document.getElementById("lessons-grid");
+  grid.innerHTML = "";
+  LESSONS.forEach((lesson, idx) => {
+    const done = state.completed.includes(lesson.id);
+    const locked = idx > 0 && !state.completed.includes(LESSONS[idx-1].id);
+    const isNext = !done && !locked;
+    const score = state.testScores[lesson.id];
+
+    const card = document.createElement("div");
+    card.className = "card card-hover fade-up" + (done ? " lesson-done" : "") + (isNext ? " lesson-next" : "") + (locked ? " lesson-locked" : "");
+    card.style.cssText = `animation-delay:${idx*0.04}s;position:relative;overflow:hidden`;
+    card.innerHTML = `
+      ${done ? `<div style="position:absolute;top:10px;right:10px;font-size:13px;color:var(--green)">✓</div>` : ""}
+      <div style="font-size:28px;margin-bottom:10px;line-height:1">${lesson.icon}</div>
+      <div style="font-size:13px;font-weight:700;margin-bottom:4px;line-height:1.3">${lesson.title}</div>
+      <div style="font-size:11px;color:var(--text2);margin-bottom:12px;line-height:1.4">${lesson.shortDesc}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span class="xp-pill" style="font-size:10px;padding:2px 7px">+${lesson.xpReward} XP</span>
+        ${score !== undefined ? `<span style="font-size:11px;color:${score===lesson.tests.length?"var(--green)":"var(--yellow)"}">📝 ${score}/${lesson.tests.length}</span>` : ""}
+      </div>
+      ${done ? `<div style="margin-top:8px;height:2px;background:rgba(34,214,122,0.3);border-radius:2px"><div style="height:100%;background:var(--green);width:100%;border-radius:2px"></div></div>` : ""}
+    `;
+    if (!locked) card.onclick = () => openLesson(lesson.id);
+    grid.appendChild(card);
+  });
+}
+
+function renderSidebarAchievements() {
+  const el = document.getElementById("sidebar-achievements");
+  if (!el) return;
+  const earned = ACHIEVEMENTS.filter(a => state.achievements.includes(a.id));
+  const unearned = ACHIEVEMENTS.filter(a => !state.achievements.includes(a.id)).slice(0,3);
+  el.innerHTML = earned.slice(-3).reverse().map(a => `
+    <div style="display:flex;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:18px">${a.icon}</span>
+      <div>
+        <div style="font-size:12px;font-weight:600">${a.title}</div>
+        <div style="font-size:10px;color:var(--text2)">${a.desc}</div>
+      </div>
+    </div>
+  `).join("") + (earned.length === 0 ? `<div style="font-size:12px;color:var(--text3);padding:8px 0">Алғашқы сабақты аяқтап, жетістік алыңыз! 🎯</div>` : "") +
+  `<div style="margin-top:8px">
+    ${unearned.map(a => `<div style="display:flex;gap:8px;align-items:center;padding:5px 0;opacity:0.4">
+      <span style="font-size:15px">${a.icon}</span>
+      <div style="font-size:11px;color:var(--text3)">${a.title}</div>
+    </div>`).join("")}
+  </div>`;
+}
+
+function renderLeaderboard() {
+  const el = document.getElementById("sidebar-leaderboard");
+  if (!el) return;
+  // Add player to leaderboard
+  const playerLvl = getLevelInfo(state.xp);
+  const allPlayers = [...LEADERBOARD, {name:"Сен 👤",xp:state.xp,emoji:playerLvl.emoji,isYou:true}]
+    .sort((a,b)=>b.xp-a.xp);
+  el.innerHTML = allPlayers.map((p,i) => `
+    <div style="display:flex;align-items:center;gap:8px;padding:6px 0;${p.isYou?"border-radius:6px;background:rgba(91,110,245,0.08);padding:6px 8px;margin:0 -8px":""}">
+      <span style="font-size:11px;font-weight:700;color:var(--text3);min-width:16px">${i+1}</span>
+      <span style="font-size:14px">${p.emoji}</span>
+      <span style="font-size:12px;font-weight:${p.isYou?"700":"500"};color:${p.isYou?"var(--accent)":"var(--text)"};flex:1">${p.name}</span>
+      <span class="xp-pill" style="font-size:10px;padding:1px 6px">${p.xp}</span>
+    </div>
+  `).join("");
+}
+
+// ═══════════════════════════════════════════════════
+// LESSON SYSTEM
+// ═══════════════════════════════════════════════════
+let currentLesson = null;
+let currentLessonTab = "theory";
+let testAnswers = {};
+
+function openLesson(id) {
+  currentLesson = LESSONS.find(l => l.id === id);
+  if (!currentLesson) return;
+  testAnswers = {};
+  showScreen("lesson");
+  renderLesson();
+}
+
+function renderLesson() {
+  const lesson = currentLesson;
+  if (!lesson) return;
+  const idx = LESSONS.findIndex(l => l.id === lesson.id);
+  const done = state.completed.includes(lesson.id);
+
+  document.getElementById("lesson-icon").textContent = lesson.icon;
+  document.getElementById("lesson-title").textContent = lesson.title;
+  document.getElementById("lesson-xp-pill").textContent = `+${lesson.xpReward} XP`;
+  document.getElementById("lesson-progress-line").style.width = `${Math.round((idx+1)/LESSONS.length*100)}%`;
+  document.getElementById("lesson-done-badge").style.display = done ? "inline-flex" : "none";
+
+  switchLessonTab("theory");
+}
+
+function switchLessonTab(tab) {
+  currentLessonTab = tab;
+  document.querySelectorAll("#lesson-tabs .tab-btn").forEach((b,i) => {
+    const tabs = ["theory","examples","tasks","tests"];
+    b.classList.toggle("active", tabs[i] === tab);
+  });
+  document.querySelectorAll(".lesson-tab").forEach(t => t.style.display = "none");
+  const el = document.getElementById("tab-" + tab);
+  el.style.display = "block";
+
+  const lesson = currentLesson;
+  if (!lesson) return;
+
+  if (tab === "theory") renderTheory(lesson, el);
+  if (tab === "examples") renderExamples(lesson, el);
+  if (tab === "tasks") renderTasks(lesson, el);
+  if (tab === "tests") renderTests(lesson, el);
+}
+
+function renderTheory(lesson, el) {
+  const errorHtml = lesson.commonErrors.length > 0 ? `
+    <div class="card fade-up" style="margin-top:20px;border-color:rgba(240,80,96,0.2);background:rgba(240,80,96,0.04)">
+      <div style="font-size:13px;font-weight:700;margin-bottom:14px;color:var(--red)">⚠️ Жиі кездесетін қателер</div>
+      ${lesson.commonErrors.map(e => `
+        <div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)">
+          <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:6px">
+            <span style="color:var(--red);font-size:12px;font-weight:700;margin-top:2px">✗</span>
+            <div class="code-block" style="flex:1;color:var(--red)">${escapeHtml(e.wrong)}</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:6px">
+            <span style="color:var(--green);font-size:12px;font-weight:700;margin-top:2px">✓</span>
+            <div class="code-block" style="flex:1;color:var(--green)">${escapeHtml(e.right)}</div>
+          </div>
+          <div style="font-size:12px;color:var(--yellow);padding:5px 10px;background:rgba(255,204,68,0.06);border-radius:6px;border-left:2px solid var(--yellow)">💡 ${e.note}</div>
+        </div>
+      `).join("")}
+    </div>
+  ` : "";
+
+  el.innerHTML = `
+    <div class="card fade-up" style="border-color:rgba(91,110,245,0.2)">
+      <div style="font-size:13px;font-weight:700;margin-bottom:14px;color:var(--accent)">📖 Теория</div>
+      <pre style="font-family:var(--font);font-size:14px;color:var(--text2);line-height:1.9;white-space:pre-wrap;margin:0">${escapeHtml(lesson.theory)}</pre>
+    </div>
+    ${errorHtml}
+    <div style="margin-top:16px;display:flex;justify-content:flex-end">
+      <button class="btn btn-primary" onclick="switchLessonTab('examples')">Мысалдарды көр →</button>
+    </div>
+  `;
+}
+
+function renderExamples(lesson, el) {
+  el.innerHTML = lesson.examples.map((ex, i) => `
+    <div class="card fade-up" style="margin-bottom:14px;animation-delay:${i*0.07}s">
+      <div style="font-size:13px;font-weight:700;margin-bottom:12px;color:var(--accent3)">💡 ${ex.title}</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:6px;font-weight:600;letter-spacing:0.05em">КОД:</div>
+      <div class="code-block">${syntaxHighlight(ex.code)}</div>
+      <div style="margin-top:10px;font-size:11px;color:var(--text3);font-weight:600;letter-spacing:0.05em">НӘТИЖЕ:</div>
+      <div style="margin-top:6px;background:#06090f;border:1px solid rgba(34,214,122,0.15);border-radius:var(--r2);padding:12px;font-family:var(--mono);font-size:13px;color:var(--green);line-height:1.7;white-space:pre-wrap">${escapeHtml(ex.output)}</div>
+    </div>
+  `).join("") + `
+    <div style="display:flex;justify-content:flex-end;margin-top:8px">
+      <button class="btn btn-primary" onclick="switchLessonTab('tasks')">Тапсырмаларды орында →</button>
+    </div>
+  `;
+}
+
+function renderTasks(lesson, el) {
+  el.innerHTML = lesson.tasks.map((task, i) => `
+    <div class="card fade-up" style="margin-bottom:16px;animation-delay:${i*0.06}s" id="task-card-${task.id}">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div style="font-size:13px;font-weight:700">⌨️ ${task.title}</div>
+        <span id="task-badge-${task.id}" style="display:none" class="badge badge-new">✓ Орындалды</span>
+      </div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:14px;padding:10px 12px;background:var(--bg3);border-radius:var(--r2);border-left:3px solid var(--accent)">${task.desc}</div>
+      <textarea class="textarea-code" id="code-${lesson.id}-${task.id}" rows="8" spellcheck="false">${escapeHtml(task.starter)}</textarea>
+      <div id="output-${lesson.id}-${task.id}" style="display:none;margin-top:8px;background:#06090f;border:1px solid rgba(100,160,255,0.1);border-radius:var(--r2);padding:12px;font-family:var(--mono);font-size:13px;line-height:1.7;white-space:pre-wrap"></div>
+      <div id="ai-feedback-${lesson.id}-${task.id}" style="display:none;margin-top:10px"></div>
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="runTask('${lesson.id}','${task.id}')">▶ Іске қос</button>
+        <button class="btn btn-cyan" onclick="checkWithAI('${lesson.id}','${task.id}','${escapeAttr(task.desc)}')">🤖 AI тексеру</button>
+        <button class="btn btn-ghost btn-sm" onclick="getHint('${lesson.id}','${task.id}','${escapeAttr(task.desc)}')">💡 Кеңес</button>
+      </div>
+    </div>
+  `).join("") + `
+    <div style="display:flex;justify-content:flex-end;margin-top:8px">
+      <button class="btn btn-primary" onclick="switchLessonTab('tests')">Тесттерге өт →</button>
+    </div>
+  `;
+
+  // Restore saved code
+  lesson.tasks.forEach(task => {
+    const key = `${lesson.id}-${task.id}`;
+    if (state.tasksDone && state.tasksDone[key]) {
+      document.getElementById(`task-badge-${task.id}`).style.display = "inline-flex";
+    }
+  });
+}
+
+function runTask(lessonId, taskId) {
+  const lesson = LESSONS.find(l => l.id == lessonId);
+  const task = lesson.tasks.find(t => t.id === taskId);
+  const code = document.getElementById(`code-${lessonId}-${taskId}`).value;
+  const result = runPython(code);
+  const outEl = document.getElementById(`output-${lessonId}-${taskId}`);
+  outEl.style.display = "block";
+
+  if (result.error) {
+    outEl.style.borderColor = "rgba(240,80,96,0.3)";
+    outEl.style.color = "var(--red)";
+    outEl.textContent = "❌ Қате: " + result.error;
+  } else {
+    outEl.style.borderColor = "rgba(34,214,122,0.2)";
+    outEl.style.color = "var(--green)";
+    outEl.textContent = result.output || "(шығыс жоқ)";
+  }
+
+  // Check success
+  if (!result.error && task.check(result.output)) {
+    const key = `${lessonId}-${taskId}`;
+    if (!state.tasksDone) state.tasksDone = {};
+    if (!state.tasksDone[key]) {
+      state.tasksDone[key] = true;
+      saveState();
+      document.getElementById(`task-badge-${taskId}`).style.display = "inline-flex";
+      earnXP(15, "task");
+      giveAchievement("first_run");
+    }
+  }
+}
+
+async function checkWithAI(lessonId, taskId, taskDesc) {
+  const code = document.getElementById(`code-${lessonId}-${taskId}`).value;
+  const outEl = document.getElementById(`output-${lessonId}-${taskId}`);
+  const output = outEl.textContent || "";
+  const fbEl = document.getElementById(`ai-feedback-${lessonId}-${taskId}`);
+  fbEl.style.display = "block";
+  fbEl.innerHTML = `<div style="display:flex;gap:8px;align-items:center;padding:12px;background:var(--bg3);border-radius:var(--r2);border:1px solid var(--border)"><div class="spinner"></div><span style="font-size:13px;color:var(--text2)">AI кодыңды тексеруде...</span></div>`;
+
+  const prompt = `Сен Python мұғаліміне (Қазақстан мектебі, 6-сынып оқушылары) арналған AI-сың.
+
+Тапсырма: ${taskDesc}
+Оқушы коды:
+\`\`\`python
+${code}
+\`\`\`
+Код шығысы: ${output || "(шығыс жоқ)"}
+
+Тікелей Қазақ тілінде JSON форматында жауап бер:
+{"status":"excellent"|"good"|"has_errors"|"needs_improvement","score":0-100,"what_is_good":"Дұрыс жақтары","errors":["Қате 1"],"how_to_fix":"Түзету жолы","encouragement":"Ынталандырушы сөз"}
+
+ТЕК JSON қайтар.`;
+
+  try {
+    const raw = await callAI(prompt);
+    const clean = raw.replace(/```json\n?|```/g, "").trim();
+    let r;
+    try { r = JSON.parse(clean); } catch { r = {status:"good",score:75,what_is_good:raw,errors:[],encouragement:"Жақсы!"} }
+
+    const statusMap = {
+      excellent:{color:"var(--green)",icon:"🌟",label:"Өте жақсы!"},
+      good:{color:"var(--blue)",icon:"👍",label:"Жақсы!"},
+      has_errors:{color:"var(--red)",icon:"🔧",label:"Қателер бар"},
+      needs_improvement:{color:"var(--yellow)",icon:"💪",label:"Жақсарту керек"},
+    };
+    const s = statusMap[r.status] || statusMap.good;
+    fbEl.innerHTML = `
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:14px">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px">
+          <span style="font-size:18px">${s.icon}</span>
+          <span style="font-size:13px;font-weight:700;color:${s.color}">${s.label}</span>
+          <span style="font-size:12px;color:var(--text3);margin-left:auto">${r.score}/100</span>
+        </div>
+        ${r.what_is_good ? `<p style="font-size:13px;color:var(--green);margin-bottom:8px">✓ ${r.what_is_good}</p>` : ""}
+        ${r.errors && r.errors.length ? r.errors.map(e=>`<div style="font-size:13px;color:var(--red);padding:6px 10px;border-left:2px solid var(--red);margin-bottom:6px">⚠️ ${e}</div>`).join("") : ""}
+        ${r.how_to_fix ? `<div style="font-size:13px;color:var(--text2);margin-top:6px">🔧 ${r.how_to_fix}</div>` : ""}
+        ${r.encouragement ? `<div style="margin-top:10px;padding:8px 12px;background:rgba(91,110,245,0.08);border-radius:6px;border-left:2px solid var(--accent);font-size:13px;font-style:italic;color:var(--text)">🌟 ${r.encouragement}</div>` : ""}
+      </div>
+    `;
+    if (r.score >= 80) earnXP(20, "ai_check");
+  } catch {
+    fbEl.innerHTML = `<div style="font-size:13px;color:var(--text2);padding:10px;background:var(--bg3);border-radius:var(--r2)">AI қолжетімді емес. Кейін қайталап көр. 🙏</div>`;
+  }
+}
+
+async function getHint(lessonId, taskId, taskDesc) {
+  const code = document.getElementById(`code-${lessonId}-${taskId}`).value;
+  const fbEl = document.getElementById(`ai-feedback-${lessonId}-${taskId}`);
+  fbEl.style.display = "block";
+  fbEl.innerHTML = `<div style="display:flex;gap:8px;align-items:center;padding:12px;background:var(--bg3);border-radius:var(--r2)"><div class="spinner"></div><span style="font-size:13px;color:var(--text2)">AI кеңес дайындауда...</span></div>`;
+  try {
+    const hint = await callAI(`Сен Python мұғаліміне арналған AI-сың. Оқушыға ТОЛЫҚ жауап берме, тек бағыт бер.
+
+Тапсырма: ${taskDesc}
+Оқушы коды:
+\`\`\`python
+${code}
+\`\`\`
+
+Қазақ тілінде ҚЫСҚАША бір кеңес бер (2-3 сөйлем). Толық жауап берме!`);
+    fbEl.innerHTML = `<div style="background:rgba(255,204,68,0.06);border:1px solid rgba(255,204,68,0.2);border-radius:var(--r2);padding:12px;font-size:13px;color:var(--text);line-height:1.7">💡 <strong>Кеңес:</strong> ${hint}</div>`;
+  } catch {
+    fbEl.innerHTML = `<div style="font-size:13px;color:var(--text2);padding:10px;background:var(--bg3);border-radius:var(--r2)">AI қолжетімді емес. Теорияны қайта оқып көр! 📚</div>`;
+  }
+}
+
+function renderTests(lesson, el) {
+  const done = state.completed.includes(lesson.id);
+  let testScore = state.testScores[lesson.id] || 0;
+  let answeredCount = 0;
+
+  el.innerHTML = `
+    <div style="margin-bottom:16px">
+      <div style="font-size:14px;font-weight:700;margin-bottom:4px">📝 Тест — ${lesson.title}</div>
+      <div style="font-size:13px;color:var(--text2)">${lesson.tests.length} сұрақ</div>
+    </div>
+    <div id="tests-container"></div>
+    <div id="lesson-complete-section" style="display:none"></div>
+  `;
+
+  const container = el.querySelector("#tests-container");
+  lesson.tests.forEach((q, i) => {
+    const qEl = document.createElement("div");
+    qEl.className = "card fade-up";
+    qEl.style.cssText = `margin-bottom:12px;animation-delay:${i*0.06}s`;
+    qEl.dataset.answered = "0";
+
+    const typeLabels = {choice:{bg:"rgba(77,168,255,0.12)",color:"var(--blue)",label:"Таңдамалы"},truefalse:{bg:"rgba(255,204,68,0.12)",color:"var(--yellow)",label:"Дұрыс/Бұрыс"},fill:{bg:"rgba(34,214,122,0.12)",color:"var(--green)",label:"Толтыру"}};
+    const tc = typeLabels[q.type];
+
+    qEl.innerHTML = `
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <span style="background:var(--bg4);padding:1px 8px;border-radius:999px;font-size:11px;color:var(--text2);font-weight:700">${i+1}</span>
+        <span style="background:${tc.bg};color:${tc.color};padding:1px 8px;border-radius:999px;font-size:11px;font-weight:700">${tc.label}</span>
+      </div>
+      <p style="font-size:14px;margin-bottom:14px;line-height:1.6">${q.q}</p>
+      <div class="q-options"></div>
+      <div class="q-submit-row" style="margin-top:12px;display:flex;justify-content:space-between;align-items:center">
+        <button class="btn btn-primary btn-sm" onclick="submitAnswer(this)" data-qi="${i}" data-lessonid="${lesson.id}">Тексеру</button>
+      </div>
+      <div class="q-feedback" style="display:none;margin-top:12px"></div>
+    `;
+
+    const opts = qEl.querySelector(".q-options");
+    if (q.type === "choice") {
+      opts.innerHTML = q.opts.map((o,oi) => `
+        <div class="choice-opt" data-idx="${oi}" onclick="selectOpt(this)"
+          style="padding:10px 14px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;font-size:13px;margin-bottom:6px;display:flex;align-items:center;gap:10px;transition:all 0.15s">
+          <span style="font-size:11px;font-weight:700;color:var(--text3);min-width:16px">${String.fromCharCode(65+oi)}</span>
+          <span>${o}</span>
+        </div>`).join("");
+    } else if (q.type === "truefalse") {
+      opts.innerHTML = `
+        <div style="display:flex;gap:10px">
+          <div class="tf-opt" data-idx="0" onclick="selectOpt(this)" style="flex:1;text-align:center;padding:12px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;font-size:14px;font-weight:600;transition:all 0.15s">✓ Дұрыс</div>
+          <div class="tf-opt" data-idx="1" onclick="selectOpt(this)" style="flex:1;text-align:center;padding:12px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;font-size:14px;font-weight:600;transition:all 0.15s">✗ Бұрыс</div>
+        </div>`;
+    } else {
+      opts.innerHTML = `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <input class="input-field" style="width:200px;font-family:var(--mono)" placeholder="${q.hint||'Жауапты жаз...'}" data-fill="1"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();this.closest('.card').querySelector('[data-qi]').click()}" />
+      </div>`;
+    }
+
+    container.appendChild(qEl);
+  });
+}
+
+function selectOpt(el) {
+  const card = el.closest(".card");
+  if (card.dataset.answered === "1") return;
+  const siblings = el.parentElement.querySelectorAll(".choice-opt,.tf-opt");
+  siblings.forEach(s => {
+    s.style.background = "var(--bg3)";
+    s.style.borderColor = "var(--border)";
+    s.dataset.selected = "";
+  });
+  el.style.background = "rgba(91,110,245,0.12)";
+  el.style.borderColor = "var(--accent)";
+  el.dataset.selected = "1";
+}
+
+function submitAnswer(btn) {
+  const qi = parseInt(btn.dataset.qi);
+  const lessonId = parseInt(btn.dataset.lessonid);
+  const lesson = LESSONS.find(l => l.id === lessonId);
+  const q = lesson.tests[qi];
+  const card = btn.closest(".card");
+  if (card.dataset.answered === "1") return;
+
+  let correct = false;
+  if (q.type === "choice") {
+    const sel = card.querySelector(".choice-opt[data-selected='1']");
+    if (!sel) { showToast("Жауап таңдаңыз!"); return; }
+    const idx = parseInt(sel.dataset.idx);
+    correct = idx === q.ans;
+    card.querySelectorAll(".choice-opt").forEach((o,i) => {
+      if (i === q.ans) { o.style.background="rgba(34,214,122,0.1)"; o.style.borderColor="rgba(34,214,122,0.4)"; }
+      else if (parseInt(o.dataset.idx)===idx && !correct) { o.style.background="rgba(240,80,96,0.1)"; o.style.borderColor="rgba(240,80,96,0.4)"; }
+    });
+  } else if (q.type === "truefalse") {
+    const sel = card.querySelector(".tf-opt[data-selected='1']");
+    if (!sel) { showToast("Жауап таңдаңыз!"); return; }
+    const idx = parseInt(sel.dataset.idx);
+    const correctIdx = q.ans ? 0 : 1;
+    correct = idx === correctIdx;
+    card.querySelectorAll(".tf-opt").forEach((o,i) => {
+      if (i === correctIdx) { o.style.background="rgba(34,214,122,0.1)"; o.style.borderColor="rgba(34,214,122,0.4)"; }
+      else if (parseInt(o.dataset.idx)===idx && !correct) { o.style.background="rgba(240,80,96,0.1)"; o.style.borderColor="rgba(240,80,96,0.4)"; }
+    });
+  } else {
+    const inp = card.querySelector("[data-fill]");
+    if (!inp.value.trim()) { showToast("Жауап жазыңыз!"); return; }
+    correct = inp.value.trim().toLowerCase() === q.ans.toLowerCase();
+    inp.style.borderColor = correct ? "rgba(34,214,122,0.5)" : "rgba(240,80,96,0.5)";
+    if (!correct) {
+      const row = inp.parentElement;
+      row.innerHTML += `<span style="font-size:13px;color:var(--red)">Дұрысы: <code style="font-family:var(--mono);background:var(--bg4);padding:1px 6px;border-radius:4px">${q.ans}</code></span>`;
+    }
+  }
+
+  card.dataset.answered = "1";
+  card.style.borderColor = correct ? "rgba(34,214,122,0.3)" : "rgba(240,80,96,0.3)";
+  card.style.background = correct ? "rgba(34,214,122,0.03)" : "rgba(240,80,96,0.03)";
+  btn.style.display = "none";
+
+  const fb = card.querySelector(".q-feedback");
+  fb.style.display = "block";
+  if (correct) {
+    fb.innerHTML = `<span style="font-size:13px;font-weight:700;color:var(--green)">✓ Дұрыс! +10 XP 🎉</span>`;
+    earnXP(10, "test");
+  } else {
+    fb.innerHTML = `<div style="font-size:13px;font-weight:700;color:var(--red);margin-bottom:8px">✗ Бұрыс</div><div style="font-size:12px;color:var(--text2)">AI түсіндіруін алу үшін күте тұрыңыз...</div>`;
+    getAITestFeedback(q, fb);
+  }
+
+  // Track score for lesson completion
+  if (!state.testScores[lessonId]) state.testScores[lessonId] = 0;
+  if (correct) {
+    state.testScores[lessonId]++;
+    saveState();
+  }
+  checkLessonCompletion(lessonId);
+}
+
+async function getAITestFeedback(q, fbEl) {
+  try {
+    const correctAns = q.type==="choice" ? q.opts[q.ans] : q.type==="truefalse" ? (q.ans?"Дұрыс":"Бұрыс") : q.ans;
+    const raw = await callAI(`Сен Python мұғаліміне арналған AI-сың (Қазақстан, 6-сынып).
+
+Сұрақ: ${q.q}
+Дұрыс жауап: ${correctAns}
+
+Қазақ тілінде JSON форматында қайтар:
+{"explanation":"Бұл не екенін түсіндір (2 сөйлем)","memory_tip":"Есте сақтауға кеңес"}
+
+ТЕК JSON қайтар.`);
+    const clean = raw.replace(/```json\n?|```/g, "").trim();
+    let r;
+    try { r = JSON.parse(clean); } catch { r = {explanation: raw, memory_tip:""}; }
+    fbEl.innerHTML = `
+      <div style="font-size:13px;font-weight:700;color:var(--red);margin-bottom:8px">✗ Бұрыс</div>
+      <div style="background:var(--bg3);border-radius:var(--r2);padding:12px;border:1px solid var(--border)">
+        <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:6px">🤖 AI Мұғалімнің түсіндіруі</div>
+        ${r.explanation ? `<p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:6px">${r.explanation}</p>` : ""}
+        ${r.memory_tip ? `<div style="padding:7px 11px;background:rgba(255,204,68,0.07);border-radius:6px;border-left:2px solid var(--yellow);font-size:12px;color:var(--text)">💡 ${r.memory_tip}</div>` : ""}
+      </div>`;
+  } catch {
+    fbEl.innerHTML = `<span style="font-size:13px;font-weight:700;color:var(--red)">✗ Бұрыс</span>`;
+  }
+}
+
+function checkLessonCompletion(lessonId) {
+  const lesson = LESSONS.find(l => l.id === lessonId);
+  const score = state.testScores[lessonId] || 0;
+  const total = lesson.tests.length;
+  const pct = Math.round(score / total * 100);
+  const el = document.getElementById("lesson-complete-section");
+  if (!el) return;
+
+  if (pct >= 60 && !state.completed.includes(lessonId)) {
+    state.completed.push(lessonId);
+    saveState();
+    document.getElementById("lesson-done-badge").style.display = "inline-flex";
+    earnXP(lesson.xpReward, "lesson");
+    giveAchievement("first_lesson");
+    if (state.completed.length >= 6) giveAchievement("half_done");
+    if (state.completed.length >= 12) giveAchievement("python_hero");
+    if (score === total) giveAchievement("test_ace");
+  }
+
+  if (pct >= 60) {
+    el.style.display = "block";
+    el.innerHTML = `
+      <div class="card fade-up" style="text-align:center;border-color:rgba(34,214,122,0.3);background:rgba(34,214,122,0.04);margin-top:12px">
+        <div style="font-size:36px;margin-bottom:8px">🎉</div>
+        <div style="font-size:16px;font-weight:800;color:var(--green);margin-bottom:4px">Сабақ аяқталды!</div>
+        <div style="font-size:13px;color:var(--text2);margin-bottom:16px">Тест нәтижесі: ${score}/${total} (${pct}%)</div>
+        <button class="btn btn-primary btn-lg" onclick="showScreen('dashboard')">Сабақтарға оралу →</button>
+      </div>
+    `;
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// PYTHON SIMULATOR
+// ═══════════════════════════════════════════════════
+function runPython(code) {
+  try {
+    const lines = code.split("\n");
+    const output = [];
+    const vars = {};
+    const fns = {};
+
+    const evalExpr = (expr) => {
+      expr = expr.trim();
+      if (!expr) return "";
+      if (expr === "True") return true;
+      if (expr === "False") return false;
+      if (expr === "None") return null;
+      // String
+      const strM = expr.match(/^(["'])(.*)(\1)$/s);
+      if (strM) return strM[2];
+      // f-string
+      const fstrM = expr.match(/^f(["'])(.*)\1$/s);
+      if (fstrM) return fstrM[2].replace(/\{([^}]+)\}/g, (_,v) => { const val = evalExpr(v.trim()); return val !== undefined && val !== null ? val : v; });
+      // **
+      if (expr.includes("**")) { const [a,b] = expr.split("**"); return Math.pow(Number(evalExpr(a.trim())), Number(evalExpr(b.trim()))); }
+      // // 
+      const idM = expr.match(/^(.+?)\s*\/\/\s*(.+)$/);
+      if (idM) return Math.floor(Number(evalExpr(idM[1])) / Number(evalExpr(idM[2])));
+      // %
+      const modM = expr.match(/^(.+?)\s*%\s*(.+)$/);
+      if (modM) return Number(evalExpr(modM[1])) % Number(evalExpr(modM[2]));
+      // arithmetic
+      const arM = expr.match(/^(.+?)\s*([\+\-\*\/])\s*(.+)$/);
+      if (arM) {
+        const a = evalExpr(arM[1]), b = evalExpr(arM[3]), op = arM[2];
+        if (typeof a === "string" || typeof b === "string") { if (op==="+") return String(a)+String(b); }
+        const na=Number(a),nb=Number(b);
+        if (op==="+") return na+nb; if (op==="-") return na-nb;
+        if (op==="*") return na*nb; if (op==="/") return nb!==0?na/nb:"ZeroDivisionError";
+      }
+      // number
+      if (/^-?\d+\.?\d*$/.test(expr)) return parseFloat(expr);
+      // function call
+      const fnM = expr.match(/^(\w+)\((.*?)?\)$/s);
+      if (fnM) {
+        const fn=fnM[1], argStr=fnM[2]||"";
+        const arg = argStr ? evalExpr(argStr) : undefined;
+        if (fn==="int") return Math.trunc(Number(arg));
+        if (fn==="float") return parseFloat(arg);
+        if (fn==="str") return String(arg);
+        if (fn==="len") return typeof arg==="string"?arg.length:0;
+        if (fn==="abs") return Math.abs(Number(arg));
+        if (fn==="round") { const parts=argStr.split(","); return parts.length>1?parseFloat(Number(evalExpr(parts[0])).toFixed(parseInt(parts[1]))):Math.round(Number(evalExpr(argStr))); }
+        if (fn==="type") {
+          const v=evalExpr(argStr);
+          if (typeof v==="boolean") return "<class 'bool'>";
+          if (typeof v==="number"&&Number.isInteger(v)) return "<class 'int'>";
+          if (typeof v==="number") return "<class 'float'>";
+          return "<class 'str'>";
+        }
+        if (fn in fns) {
+          const def = fns[fn];
+          const localVars = {...vars};
+          const args = argStr.split(",").map(a=>evalExpr(a.trim()));
+          def.params.forEach((p,i)=>localVars[p]=args[i]);
+          let ret = null;
+          def.lines.forEach(l=>{
+            const tl=l.trim();
+            if (tl.startsWith("return ")) ret=evalExpr(tl.slice(7));
+            else if (tl.startsWith("print(")) {
+              const inner=tl.slice(6,-1);
+              output.push(evalPrint(inner,localVars));
+            }
+          });
+          return ret;
+        }
+        // random
+        if (fn==="randint") { const [a,b]=argStr.split(","); return Math.floor(Math.random()*(parseInt(evalExpr(b.trim()))-parseInt(evalExpr(a.trim()))+1))+parseInt(evalExpr(a.trim())); }
+        if (fn==="choice") { const arr=vars[argStr.trim()]||[]; return arr[Math.floor(Math.random()*arr.length)]; }
+      }
+      if (expr in vars) return vars[expr];
+      return expr;
+    };
+
+    const evalPrint = (inner, localV=null) => {
+      const V = localV || vars;
+      const args = splitArgs(inner);
+      return args.map(a => {
+        a = a.trim();
+        if (!a) return "";
+        const strM = a.match(/^(["'])(.*)(\1)$/s);
+        if (strM) return strM[2];
+        const fstrM = a.match(/^f(["'])(.*)\1$/s);
+        if (fstrM) return fstrM[2].replace(/\{([^}]+)\}/g, (_,v) => { const val = evalExprWith(v.trim(),V); return val!==undefined&&val!==null?val:v; });
+        if (a in V) return V[a];
+        return evalExprWith(a, V);
+      }).join(" ");
+    };
+
+    const evalExprWith = (expr, V) => {
+      if (expr in V) return V[expr];
+      return evalExpr(expr);
+    };
+
+    const splitArgs = (s) => {
+      const res=[]; let depth=0, cur="", inStr=false, strCh="";
+      for (let c of s) {
+        if (!inStr&&(c==='"'||c==="'")) { inStr=true; strCh=c; cur+=c; }
+        else if (inStr&&c===strCh) { inStr=false; cur+=c; }
+        else if (!inStr&&(c==="("||c==="[")) { depth++; cur+=c; }
+        else if (!inStr&&(c===")"||c==="]")) { depth--; cur+=c; }
+        else if (!inStr&&c===","&&depth===0) { res.push(cur); cur=""; }
+        else cur+=c;
+      }
+      if (cur) res.push(cur);
+      return res;
+    };
+
+    let i = 0;
+    while (i < lines.length) {
+      const raw = lines[i]; const line = raw.trim(); i++;
+      if (!line || line.startsWith("#")) continue;
+      if (line.startsWith("import ")) continue;
+
+      // def function
+      if (line.startsWith("def ")) {
+        const m = line.match(/^def (\w+)\((.*?)\):/);
+        if (m) {
+          const name=m[1], params=m[2].split(",").map(p=>p.trim()).filter(Boolean);
+          const bodyLines = [];
+          while (i < lines.length && (lines[i].startsWith("    ") || lines[i].startsWith("\t") || !lines[i].trim())) {
+            if (lines[i].trim()) bodyLines.push(lines[i]);
+            i++;
+          }
+          fns[name] = {params, lines:bodyLines};
+        }
+        continue;
+      }
+
+      // for loop
+      if (line.startsWith("for ")) {
+        const m = line.match(/^for (\w+) in range\((.+?)\):/);
+        if (m) {
+          const v=m[1], rArgs=m[2].split(",").map(a=>Number(evalExpr(a.trim())));
+          let start=0,end=0,step=1;
+          if (rArgs.length===1){end=rArgs[0];}
+          else if(rArgs.length===2){start=rArgs[0];end=rArgs[1];}
+          else{start=rArgs[0];end=rArgs[1];step=rArgs[2];}
+          const body=[];
+          while(i<lines.length&&(lines[i].startsWith("    ")||lines[i].startsWith("\t"))){if(lines[i].trim())body.push(lines[i]);i++;}
+          let count=0;
+          for(let n=start;step>0?n<end:n>end;n+=step){
+            if(++count>500)break;
+            vars[v]=n;
+            body.forEach(bl=>{
+              const bt=bl.trim();
+              if(bt.startsWith("print(")){const inner=bt.slice(6,-1);output.push(evalPrint(inner));}
+            });
+          }
+          continue;
+        }
+        // for x in list/string
+        const m2 = line.match(/^for (\w+) in (\w+):/);
+        if(m2){
+          const v=m2[1],src=m2[2];
+          const val=vars[src]||[];
+          const body=[];
+          while(i<lines.length&&(lines[i].startsWith("    ")||lines[i].startsWith("\t"))){if(lines[i].trim())body.push(lines[i]);i++;}
+          const iter=Array.isArray(val)?val:[...String(val)];
+          iter.slice(0,500).forEach(item=>{
+            vars[v]=item;
+            body.forEach(bl=>{const bt=bl.trim();if(bt.startsWith("print(")){const inner=bt.slice(6,-1);output.push(evalPrint(inner));}});
+          });
+          continue;
+        }
+        continue;
+      }
+
+      // while loop
+      if (line.startsWith("while ")) {
+        const body=[];
+        while(i<lines.length&&(lines[i].startsWith("    ")||lines[i].startsWith("\t"))){if(lines[i].trim())body.push(lines[i]);i++;}
+        let count=0;
+        // Simple while i <= n pattern
+        let broken=false;
+        while(count++<300&&!broken){
+          // evaluate condition roughly
+          const cond=line.slice(6,-1).trim();
+          let ok=false;
+          try{
+            const m=cond.match(/^(\w+)\s*(<=|>=|<|>|==|!=)\s*(.+)$/);
+            if(m){const lv=vars[m[1]]??evalExpr(m[1]),rv=evalExpr(m[3]),op=m[2];
+              if(op==="<=")ok=lv<=rv;if(op===">=")ok=lv>=rv;if(op==="<")ok=lv<rv;
+              if(op===">")ok=lv>rv;if(op==="==")ok=lv==rv;if(op==="!=")ok=lv!=rv;
+            } else if(cond==="True")ok=true;
+          }catch{}
+          if(!ok)break;
+          for(const bl of body){
+            const bt=bl.trim();
+            if(bt==="break"){broken=true;break;}
+            if(bt.startsWith("print(")){const inner=bt.slice(6,-1);output.push(evalPrint(inner));}
+            if(bt.match(/^(\w+)\s*(\+|-|\*|\/)=\s*(.+)$/)){
+              const mm=bt.match(/^(\w+)\s*(\+|-|\*|\/)=\s*(.+)$/);
+              const vv=mm[1],op=mm[2],val=evalExpr(mm[3]);
+              if(op==="+")vars[vv]=(vars[vv]||0)+Number(val);
+              if(op==="-")vars[vv]=(vars[vv]||0)-Number(val);
+              if(op==="*")vars[vv]=(vars[vv]||0)*Number(val);
+              if(op==="/")vars[vv]=(vars[vv]||0)/Number(val);
+            }
+            if(bt.match(/^(\w+)\s*=\s*(.+)$/)){
+              const mm=bt.match(/^(\w+)\s*=\s*(.+)$/);
+              if(!bt.includes("=="))vars[mm[1]]=evalExpr(mm[2]);
+            }
+          }
+        }
+        continue;
+      }
+
+      // print
+      if (line.startsWith("print(")) {
+        const inner=line.slice(6,-1);
+        output.push(evalPrint(inner));
+        continue;
+      }
+
+      // assignment
+      const assignM = line.match(/^(\w+)\s*=\s*(.+)$/);
+      if (assignM && !line.includes("==")) {
+        vars[assignM[1]] = evalExpr(assignM[2]);
+        continue;
+      }
+      // += etc
+      const compM = line.match(/^(\w+)\s*(\+|-|\*|\/)=\s*(.+)$/);
+      if (compM) {
+        const vv=compM[1],op=compM[2],val=evalExpr(compM[3]);
+        if(op==="+")vars[vv]=(vars[vv]||0)+Number(val);
+        if(op==="-")vars[vv]=(vars[vv]||0)-Number(val);
+        if(op==="*")vars[vv]=(vars[vv]||0)*Number(val);
+        if(op==="/")vars[vv]=(vars[vv]||0)/Number(val);
+        continue;
+      }
+      // fn call
+      const callM = line.match(/^(\w+)\((.*)?\)$/);
+      if (callM && callM[1] in fns) { evalExpr(line); }
+    }
+
+    return {output: output.join("\n"), error: null};
+  } catch(e) {
+    return {output:"", error: e.message};
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// AI CHAT
+// ═══════════════════════════════════════════════════
+let aiMessages = [];
+let aiInitialized = false;
+
+function initAIChat() {
+  if (!aiInitialized) {
+    aiMessages = [{role:"assistant",content:"Сәлем! Мен — PyLearn AI мұғалімі! 🤖\n\nPython туралы кез-келген сұрағыңды қоя аласың. Мен Қазақ тілінде түсіндіремін!\n\nМысалы:\n• «for цикл қалай жұмыс істейді?»\n• «list пен tuple айырмашылығы?»\n• «менің кодымды тексер»"}];
+    renderAIMessages();
+    aiInitialized = true;
+  }
+  document.getElementById("ai-suggestions").style.display = aiMessages.length <= 1 ? "flex" : "none";
+}
+
+function renderAIMessages() {
+  const el = document.getElementById("ai-messages");
+  el.innerHTML = aiMessages.map(m => `
+    <div style="display:flex;justify-content:${m.role==="user"?"flex-end":"flex-start"};gap:8px;animation:fadeUp 0.3s ease">
+      ${m.role==="assistant" ? `<div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;margin-top:2px">🤖</div>` : ""}
+      ${m.role==="user"
+        ? `<div class="ai-bubble-user">${escapeHtml(m.content)}</div>`
+        : `<div class="ai-bubble-ai">${formatAIMsg(m.content)}</div>`
+      }
+    </div>
+  `).join("");
+  el.scrollTop = el.scrollHeight;
+}
+
+function formatAIMsg(text) {
+  return text
+    .replace(/```python\n?([\s\S]*?)```/g, '<pre>$1</pre>')
+    .replace(/```\n?([\s\S]*?)```/g, '<pre>$1</pre>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>');
+}
+
+let aiLoading = false;
+async function sendAIMessage() {
+  if (aiLoading) return;
+  const inp = document.getElementById("ai-input");
+  const msg = inp.value.trim();
+  if (!msg) return;
+  inp.value = "";
+  document.getElementById("ai-suggestions").style.display = "none";
+
+  aiMessages.push({role:"user",content:msg});
+  renderAIMessages();
+  aiLoading = true;
+  document.getElementById("ai-send-text").style.display = "none";
+  document.getElementById("ai-spinner").style.display = "inline-block";
+
+  // Add loading bubble
+  const el = document.getElementById("ai-messages");
+  const loadEl = document.createElement("div");
+  loadEl.id = "ai-loading-bubble";
+  loadEl.style.cssText = "display:flex;gap:8px;align-items:center;animation:fadeUp 0.3s ease";
+  loadEl.innerHTML = `<div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:15px">🤖</div><div class="ai-bubble-ai"><div style="display:flex;gap:6px;align-items:center"><div class="spinner"></div><span style="font-size:13px;color:var(--text2)">AI мұғалім ойлануда...</span></div></div>`;
+  el.appendChild(loadEl);
+  el.scrollTop = el.scrollHeight;
+
+  const lvl = getLevelInfo(state.xp);
+  try {
+    const reply = await callAI(msg, `Сен PyLearn KZ платформасының AI мұғаліміміз. Қазақстанда 6-сынып оқушыларына Python үйретесің.
+
+Оқушы деңгейі: ${lvl.name}
+
+Ережелер:
+1. БАРЛЫҒЫН Қазақ тілінде жауап бер
+2. Қарапайым, түсінікті тілде сөйле (6-сынып деңгейінде)
+3. Мысалдар арқылы түсіндір
+4. Python кодын \`\`\`python блогына сал
+5. Ынталандыр, мақта
+6. Сұраққа тікелей жауап бер, ұзақ кіріспе жасама`, aiMessages.slice(0,-1));
+    aiMessages.push({role:"assistant",content:reply});
+
+    state.aiQuestionCount++;
+    saveState();
+    earnXP(5, "ai");
+    if (state.aiQuestionCount >= 5) giveAchievement("ai_helper");
+  } catch {
+    aiMessages.push({role:"assistant",content:"Кешіріңіз, AI қолжетімді емес. Интернет байланысын тексеріңіз немесе кейінірек қайталап көріңіз. 🙏"});
+  }
+
+  loadEl.remove();
+  renderAIMessages();
+  aiLoading = false;
+  document.getElementById("ai-send-text").style.display = "inline";
+  document.getElementById("ai-spinner").style.display = "none";
+}
+
+function aiQuickSend(msg) {
+  document.getElementById("ai-input").value = msg;
+  sendAIMessage();
+}
+
+function clearAIChat() {
+  aiMessages = [{role:"assistant",content:"Чат тазаланды. Жаңа сұрақ қоя аласыз! 🤖"}];
+  aiInitialized = false;
+  initAIChat();
+}
+
+// ═══════════════════════════════════════════════════
+// TEACHER PANEL
+// ═══════════════════════════════════════════════════
+const STUDENTS = [
+  {name:"Арман Б.",xp:350,done:3,tests:{r:14,t:18}},
+  {name:"Аида М.",xp:820,done:7,tests:{r:38,t:42}},
+  {name:"Дамир С.",xp:220,done:2,tests:{r:8,t:12}},
+  {name:"Жансая Т.",xp:1100,done:9,tests:{r:51,t:54}},
+  {name:"Нурлан К.",xp:540,done:5,tests:{r:26,t:30}},
+  {name:"Мадина Е.",xp:410,done:4,tests:{r:20,t:24}},
+];
+
+function renderTeacher() {
+  const avgXP = Math.round(STUDENTS.reduce((s,x)=>s+x.xp,0)/STUDENTS.length);
+  const avgDone = (STUDENTS.reduce((s,x)=>s+x.done,0)/STUDENTS.length).toFixed(1);
+  const allTests = STUDENTS.reduce((s,x)=>({r:s.r+x.tests.r,t:s.t+x.tests.t}),{r:0,t:0});
+  const avgTest = Math.round(allTests.r/allTests.t*100);
+
+  document.getElementById("teacher-body").innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:24px">
+      ${[
+        {icon:"👥",label:"Оқушылар",value:STUDENTS.length,color:"var(--blue)"},
+        {icon:"📚",label:"Орт. сабақ",value:`${avgDone}/${LESSONS.length}`,color:"var(--green)"},
+        {icon:"⚡",label:"Орт. XP",value:avgXP,color:"var(--yellow)"},
+        {icon:"📝",label:"Орт. тест",value:`${avgTest}%`,color:avgTest>=70?"var(--green)":"var(--red)"},
+      ].map(s=>`
+        <div class="card fade-up" style="text-align:center">
+          <div style="font-size:24px;margin-bottom:8px">${s.icon}</div>
+          <div style="font-size:26px;font-weight:800;color:${s.color}">${s.value}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:3px;font-weight:600">${s.label}</div>
+        </div>
+      `).join("")}
+    </div>
+
+    <div class="card fade-up" style="margin-bottom:20px;padding:0;overflow:hidden">
+      <div style="padding:16px 20px;border-bottom:1px solid var(--border);font-size:14px;font-weight:700">Оқушылар прогресі</div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:13px">
+          <thead><tr style="background:var(--bg2)">
+            ${["Оқушы","Деңгей","XP","Прогресс","Тест нәтижесі","Статус"].map(h=>`<th style="padding:10px 16px;text-align:left;color:var(--text3);font-weight:600;font-size:11px;white-space:nowrap">${h}</th>`).join("")}
+          </tr></thead>
+          <tbody>
+            ${STUDENTS.map(s=>{
+              const lvl=getLevelInfo(s.xp);
+              const tpct=Math.round(s.tests.r/s.tests.t*100);
+              const lpct=Math.round(s.done/LESSONS.length*100);
+              return `<tr style="border-top:1px solid var(--border)">
+                <td style="padding:12px 16px;font-weight:600">${s.name}</td>
+                <td style="padding:12px 16px"><span style="color:${lvl.color};font-weight:600;font-size:12px">${lvl.emoji} ${lvl.name}</span></td>
+                <td style="padding:12px 16px;font-weight:700">${s.xp}</td>
+                <td style="padding:12px 16px;min-width:140px">
+                  <div class="progress-bar" style="height:6px;margin-bottom:3px"><div class="progress-fill" style="width:${lpct}%;background:var(--blue)"></div></div>
+                  <span style="font-size:11px;color:var(--text3)">${s.done}/${LESSONS.length}</span>
+                </td>
+                <td style="padding:12px 16px"><span style="font-weight:700;color:${tpct>=80?"var(--green)":tpct>=60?"var(--yellow)":"var(--red)"}">${s.tests.r}/${s.tests.t} (${tpct}%)</span></td>
+                <td style="padding:12px 16px"><span class="badge ${s.done>=7?"badge-new":"badge-xp"}">${s.done>=7?"Үздік":s.done>=4?"Жақсы":"Орташа"}</span></td>
+              </tr>`;
+            }).join("")}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card fade-up">
+      <div style="font-size:14px;font-weight:700;margin-bottom:14px">Сабақтар бойынша орташа прогресс</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px">
+        ${LESSONS.map(l=>{
+          const avg=Math.round(STUDENTS.filter(s=>s.done>=l.id).length/STUDENTS.length*100);
+          return `<div style="background:var(--bg3);border-radius:var(--r2);padding:12px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+              <span style="font-size:16px">${l.icon}</span>
+              <span style="font-size:11px;font-weight:700;color:${avg>=70?"var(--green)":"var(--yellow)"}">${avg}%</span>
+            </div>
+            <div style="font-size:11px;font-weight:600;margin-bottom:6px;line-height:1.3;color:var(--text2)">${l.title}</div>
+            <div class="progress-bar" style="height:4px"><div class="progress-fill" style="width:${avg}%;background:${avg>=70?"var(--green)":"var(--yellow)"}"></div></div>
+          </div>`;
+        }).join("")}
+      </div>
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════════════════
+// AI API
+// ═══════════════════════════════════════════════════
+async function callAI(userMessage, systemPrompt=null, history=[]) {
+  const defaultSystem = "Сен Қазақстандағы Python мұғаліміне арналған AI-сың. Барлық жауаптарды Қазақ тілінде бер. Қарапайым тілде сөйле.";
+  const messages = [...history, {role:"user",content:userMessage}];
+  const response = await fetch("https://api.anthropic.com/v1/messages",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      model:"claude-sonnet-4-20250514",
+      max_tokens:1000,
+      system:systemPrompt||defaultSystem,
+      messages,
+    }),
+  });
+  if(!response.ok) throw new Error("AI error " + response.status);
+  const data = await response.json();
+  return data.content?.[0]?.text || "";
+}
+
+// ═══════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════
+function escapeHtml(s) {
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+function escapeAttr(s) {
+  return String(s).replace(/'/g,"&#39;").replace(/"/g,"&quot;").slice(0,80);
+}
+
+function syntaxHighlight(code) {
+  return escapeHtml(code)
+    .replace(/\b(print|input|int|float|str|len|range|type|abs|round|append|sort|def|return|import|for|while|if|elif|else|in|and|or|not|True|False|None|break|continue)\b/g, '<span class="py-kw">$1</span>')
+    .replace(/(["'])(.*?)\1/g, '<span class="py-str">$1$2$1</span>')
+    .replace(/\b(\d+\.?\d*)\b/g, '<span class="py-num">$1</span>')
+    .replace(/(#.*)/g, '<span class="py-cm">$1</span>');
+}
+
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
+loadState();
+renderDashboard();
+</script>
+</body>
+</html>
